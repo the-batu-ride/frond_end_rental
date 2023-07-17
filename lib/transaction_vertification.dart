@@ -79,7 +79,7 @@ class transactionVertification extends StatelessWidget {
                 margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
                  child: SizedBox(
                      width: MediaQuery.of(context).size.width * 0.45,
-                     height: MediaQuery.of(context).size.width * 0.1,
+                     height: MediaQuery.of(context).size.height * 0.07,
                      child: ElevatedButton(
                        onPressed: () {},
                        child: Text("Cancel"),
@@ -94,7 +94,7 @@ class transactionVertification extends StatelessWidget {
               margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
                child: SizedBox(
                    width: MediaQuery.of(context).size.width * 0.45,
-                   height: MediaQuery.of(context).size.width * 0.1,
+                   height: MediaQuery.of(context).size.height * 0.07,
                    child: ElevatedButton(
                        onPressed: () {}, child: Text("Confirm"))),
              ),
