@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/transaction.dart';
+import 'package:frond_end_rental/transaction_vertification.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
       return MaterialApp(
-home: transaction(),
+        theme: ThemeData(fontFamily: 'Roboto'),
+home: transactionVertification(),
     );
   }
 }
