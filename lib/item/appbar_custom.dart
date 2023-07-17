@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class appbarCustom extends AppBar{
-  appbarCustom(String data):super(
+  appbarCustom(String data,IconData icon):super(
    
     title: Text(data),
     centerTitle: true,
     actions: [
 
-      IconButton(onPressed: (){}, icon: const Icon(Icons.notifications) ),
+      IconButton(onPressed: (){}, icon: Icon(icon) ),
   
     ],
     backgroundColor: Colors.white,
