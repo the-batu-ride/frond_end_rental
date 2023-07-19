@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frond_end_rental/item/appbar_custom.dart';
-import 'package:frond_end_rental/item/footer_custom.dart';
+import 'package:frond_end_rental/widget/appbar_custom.dart';
+import 'package:frond_end_rental/widget/footer_custom.dart';
 
 var amount = "IDR. 30.000";
 var paket = "Package City Tour";
@@ -14,8 +14,8 @@ class transactionVertification extends StatelessWidget {
             height: MediaQuery.of(context).size.width * 0.05,
           ),
           Container(
-              margin: EdgeInsets.all(2),
-              child: Text(
+              margin: const EdgeInsets.all(2),
+              child: const Text(
                 "Amount",
                 style: TextStyle(fontSize: 10),
               )),
@@ -74,30 +74,30 @@ class transactionVertification extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-            
-               Container(
-                margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
-                 child: SizedBox(
-                     width: MediaQuery.of(context).size.width * 0.45,
-                     height: MediaQuery.of(context).size.height * 0.07,
-                     child: ElevatedButton(
-                       onPressed: () {},
-                       child: Text("Cancel"),
-                       style: ButtonStyle(
-                           backgroundColor:
-                               MaterialStatePropertyAll(Colors.white),
-                           foregroundColor:
-                               MaterialStatePropertyAll(Colors.black)),
-                     ))
-               ),
-             Container(
-              margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
-               child: SizedBox(
-                   width: MediaQuery.of(context).size.width * 0.45,
-                   height: MediaQuery.of(context).size.height * 0.07,
-                   child: ElevatedButton(
-                       onPressed: () {}, child: Text("Confirm"))),
-             ),
+                Container(
+                    margin: EdgeInsets.all(
+                        MediaQuery.of(context).size.width * 0.02),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text("Cancel"),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.white),
+                              foregroundColor:
+                                  MaterialStatePropertyAll(Colors.black)),
+                        ))),
+                Container(
+                  margin:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      child: ElevatedButton(
+                          onPressed: () {}, child: Text("Confirm"))),
+                ),
               ],
             ),
           ])
