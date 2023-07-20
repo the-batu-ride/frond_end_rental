@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
+import '../widget/BottomMenu.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -55,51 +56,48 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 30, right: 30),
+        padding: const EdgeInsets.only(left: 37, right: 37),
         child: Column(
           children: [
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    width: 1000,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      color: darkpurpleColor,
+            Stack(
+              children: [
+                Positioned(
+                  child: Container(
+                    width: size.width * 1,
+                    height: size.height * 0.215,
+                    decoration: const BoxDecoration(
+                      color: primaryColor,
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+                Positioned(
+                  child: Center(
+                    child: Container(
+                      width: size.width * 0.83,
+                      height: size.height * 0.41,
+                      decoration: const BoxDecoration(
+                          color: darkpurpleColor,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(11),
+                              bottomRight: Radius.circular(11))),
+                      child: const Column(
+                        children: [
+                          Text(
+                            "Selamat Datang (Asfi)",
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.left,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: darkpurpleColor,
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart_outline_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'Berita',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code),
-            label: 'Scan QR',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_outlined),
-            label: 'Notifikasi',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            label: 'Setting',
-          ),
-        ],
-      ),
+      bottomNavigationBar: BottomMenu(),
     );
   }
 }
