@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:frond_end_rental/widget/appbar_custom.dart';
-import 'package:frond_end_rental/widget/footer_custom.dart';
 
-var data = [
-  ["Packahe City Tour", "IDR 30.000", "IDR.30.000"],
-  ["Packahe City Tour", "IDR 30.000", "IDR.30.000"],
-  ["Packahe City Tour", "IDR 30.000", "IDR.30.000"]
-];
+
+import 'package:flutter/material.dart';
+import 'package:frond_end_rental/item/appbar_custom.dart';
+import 'package:frond_end_rental/item/footer_custom.dart';
+var data = [["Packahe City Tour","IDR 30.000","IDR.30.000"],["Packahe City Tour","IDR 30.000","IDR.30.000"],["Packahe City Tour","IDR 30.000","IDR.30.000"]];
 
 // model json
 // {
@@ -18,9 +15,11 @@ var data = [
 //   }
 // }
 
-class transaction extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => Scaffold(
-      appBar: appbarCustom("Transaction", Icons.notifications),
-      body: footerCustom());
+class transaction extends StatelessWidget{
+@override
+Widget build(BuildContext context)=> Scaffold(
+  appBar: appbarCustom("Transaction",Icons.notifications),
+  body: footerCustom()
+ 
+);
 }
