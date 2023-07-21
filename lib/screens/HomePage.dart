@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:frond_end_rental/widget/items.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../constant/colors.dart';
 import '../widget/BottomMenu.dart';
@@ -17,13 +18,23 @@ class _HomePageState extends State<HomePage> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: blackColor,
+      drawer: Drawer(
+        child: Container(),
+      ),
+      backgroundColor: lightGreyColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: primaryColor,
-        leading: const Icon(
-          Icons.menu,
-          color: blackColor,
+        leading: Builder(
+          builder: (cont) => InkWell(
+            onTap: () {
+              Scaffold.of(cont).openDrawer();
+            },
+            child: const Icon(
+              Icons.menu,
+              color: blackColor,
+            ),
+          ),
         ),
         title: Padding(
           padding: const EdgeInsets.all(1.0),
@@ -65,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                 Positioned(
                   child: Container(
                     width: size.width * 1,
-                    height: size.height * 0.215,
+                    height: size.height * 0.12,
                     decoration: const BoxDecoration(
                       color: primaryColor,
                     ),
@@ -76,119 +87,69 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(right: 18.0, left: 18.0),
                     child: Container(
                       width: size.width * 1,
-                      height: size.height * 0.41,
+                      height: size.height * 0.25,
                       decoration: const BoxDecoration(
-                          color: darkpurpleColor,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(11),
-                              bottomRight: Radius.circular(11))),
+                        color: whiteColor,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(11),
+                          bottomRight: Radius.circular(11),
+                        ),
+                      ),
                       child: Column(
                         children: [
                           Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
                             alignment: Alignment.centerLeft,
                             width: size.width * 0.75,
-                            height: size.height * 0.2,
+                            height: size.height * 0.11,
                             child: const Text(
                               "Selamat Datang (Nama)",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: blackColor,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 17,
+                                fontSize: 15,
                               ),
                             ),
                           ),
                           const Padding(
                             padding: EdgeInsets.only(left: 25, right: 25),
                             child: Divider(
-                              color: greyColor,
-                              height: 10,
+                              color: lightGreyColor,
+                              height: 4,
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 25, right: 25),
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 20, right: 20),
                             child: Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: size.width * 0.187,
-                                  height: size.height * 0.15,
-                                  decoration:
-                                      const BoxDecoration(color: Colors.blue),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                              Icons.calendar_month_outlined),
-                                        ),
-                                      ),
-                                      const Text("Jadwal Event")
-                                    ],
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  renderItemDashboard(
+                                    size: size,
+                                    title: 'Jadwal Event',
+                                    color: pinkEvent,
+                                    icons: Ionicons.calendar_outline,
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: size.width * 0.187,
-                                  height: size.height * 0.15,
-                                  decoration:
-                                      const BoxDecoration(color: Colors.blue),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons
-                                              .chat_bubble_outline_rounded),
-                                        ),
-                                      ),
-                                      const Text("Chat CS")
-                                    ],
+                                  renderItemDashboard(
+                                    size: size,
+                                    title: 'Chat CS',
+                                    color: purpleChat,
+                                    icons: Ionicons.chatbox_ellipses_outline,
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: size.width * 0.187,
-                                  height: size.height * 0.15,
-                                  decoration:
-                                      const BoxDecoration(color: Colors.blue),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                              Icons.pedal_bike_outlined),
-                                        ),
-                                      ),
-                                      const Text("Package Route")
-                                    ],
+                                  renderItemDashboard(
+                                    size: size,
+                                    title: 'Package Route',
+                                    color: yellowBicycle,
+                                    icons: Ionicons.bicycle_outline,
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: size.width * 0.187,
-                                  height: size.height * 0.15,
-                                  decoration:
-                                      const BoxDecoration(color: Colors.blue),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.check_box),
-                                        ),
-                                      ),
-                                      const Text("Saldo")
-                                    ],
+                                  renderItemDashboard(
+                                    size: size,
+                                    title: 'Saldo',
+                                    color: greenSaldo,
+                                    icons: Ionicons.file_tray_outline,
                                   ),
-                                ),
-                              ],
-                            ),
+                                ]),
                           ),
                         ],
                       ),
@@ -196,11 +157,31 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ],
+            ),
+            const Padding(
+              padding:
+                  EdgeInsets.only(top: 30.0, right: 20, left: 20, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Berita Terbaru",
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+                  ),
+                  Text(
+                    "View All",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                        color: mediumGreyColor),
+                  ),
+                ],
+              ),
             )
           ],
         ),
       ),
-      bottomNavigationBar: BottomMenu(),
+      bottomNavigationBar: bottomMenu(),
     );
   }
 }

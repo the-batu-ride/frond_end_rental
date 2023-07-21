@@ -2,38 +2,32 @@ import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
 
-BottomNavigationBar BottomMenu() {
-  var darkmode = true;
-  var color = darkmode == true ? Colors.white:Colors.black;
+BottomNavigationBar bottomMenu() {
   return BottomNavigationBar(
-    backgroundColor: darkpurpleColor,
-    unselectedItemColor: color,
+    onTap: (value) {},
+    currentIndex: 1,
+    backgroundColor: whiteColor,
+    selectedItemColor: purplekColor,
     type: BottomNavigationBarType.fixed,
-    items:  <BottomNavigationBarItem>[
+    items: const <BottomNavigationBarItem>[
       BottomNavigationBarItem(
-      
-        icon: Icon(Icons.pie_chart_outline_rounded ,color: 
-        
-        color
-        ),
-        label: 'Home' ,
+        icon: Icon(Icons.pie_chart_outline_rounded),
+        label: 'Home',
       ),
       BottomNavigationBarItem(
-       backgroundColor: color,
-        icon: Icon(Icons.article_outlined,color: 
-       color),
+        icon: Icon(Icons.article_outlined),
         label: 'Berita',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.qr_code,color: color),
+        icon: Icon(Icons.qr_code),
         label: 'Scan QR',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.notifications_outlined,color: color),
-        label: ('Notifikasi'),
+        icon: Icon(Icons.notifications_outlined),
+        label: 'Notifikasi',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.settings_outlined,color: color),
+        icon: Icon(Icons.settings_outlined),
         label: 'Setting',
       ),
     ],
