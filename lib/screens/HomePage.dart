@@ -71,22 +71,124 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Positioned(
-                  child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 18.0, left: 18.0),
                     child: Container(
-                      width: size.width * 0.83,
+                      width: size.width * 1,
                       height: size.height * 0.41,
                       decoration: const BoxDecoration(
                           color: darkpurpleColor,
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(11),
                               bottomRight: Radius.circular(11))),
-                      child: const Column(
+                      child: Column(
                         children: [
-                          Text(
-                            "Selamat Datang (Asfi)",
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.left,
-                          )
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            width: size.width * 0.75,
+                            height: size.height * 0.2,
+                            child: const Text(
+                              "Selamat Datang (Nama)",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Roboto',
+                                  fontSize: 17),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 25, right: 25),
+                            child: Divider(
+                              color: greyColor,
+                              height: 10,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25, right: 25),
+                            child: Row(
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: size.width * 0.187,
+                                  height: size.height * 0.15,
+                                  decoration:
+                                      const BoxDecoration(color: Colors.blue),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                              Icons.calendar_month_outlined),
+                                        ),
+                                      ),
+                                      const Text("Jadwal Event")
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: size.width * 0.187,
+                                  height: size.height * 0.15,
+                                  decoration:
+                                      const BoxDecoration(color: Colors.blue),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(Icons
+                                              .chat_bubble_outline_rounded),
+                                        ),
+                                      ),
+                                      const Text("Chat CS")
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: size.width * 0.187,
+                                  height: size.height * 0.15,
+                                  decoration:
+                                      const BoxDecoration(color: Colors.blue),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                              Icons.pedal_bike_outlined),
+                                        ),
+                                      ),
+                                      const Text("Package Route")
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: size.width * 0.187,
+                                  height: size.height * 0.15,
+                                  decoration:
+                                      const BoxDecoration(color: Colors.blue),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(Icons.check_box),
+                                        ),
+                                      ),
+                                      const Text("Saldo")
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

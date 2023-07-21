@@ -4,4 +4,5 @@ const Color primaryColor = Color(0xffffe300);
 const Color blackColor = Color(0xff030108);
 const Color darkpurpleColor = Color(0xff161129);
 const Color purplekColor = Color(0xff2d1f3b);
+const Color greyColor = Color(0xff252525);
 // const Color _blackColor = Color(0xff030108);
