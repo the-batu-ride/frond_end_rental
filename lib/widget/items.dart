@@ -13,14 +13,15 @@ Widget renderItemDashboard({
     child: Container(
       alignment: Alignment.center,
       width: size.width * 0.150,
-      height: size.height * 0.11,
+      height: size.height * 0.10,
+      // decoration: BoxDecoration(color: Colors.amber),
       child: Column(
         children: [
           Align(
             alignment: Alignment.center,
             child: Container(
-              width: size.width * 0.13,
-              height: size.height * 0.06,
+              width: 37,
+              height: 37,
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.circular(7),
@@ -29,7 +30,7 @@ Widget renderItemDashboard({
                 padding: const EdgeInsets.all(2.0),
                 child: Icon(
                   color: whiteColor,
-                  size: 26,
+                  size: 18,
                   icons,
                 ),
               ),

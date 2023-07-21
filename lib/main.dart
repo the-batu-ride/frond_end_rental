@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frond_end_rental/screens/HomePage.dart';
+import 'package:frond_end_rental/screens/HomeScreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:frond_end_rental/transaction_vertification.dart';
 

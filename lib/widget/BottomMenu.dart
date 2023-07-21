@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:ionicons/ionicons.dart';
 import '../constant/colors.dart';
 
 BottomNavigationBar bottomMenu() {
@@ -11,23 +11,23 @@ BottomNavigationBar bottomMenu() {
     type: BottomNavigationBarType.fixed,
     items: const <BottomNavigationBarItem>[
       BottomNavigationBarItem(
-        icon: Icon(Icons.pie_chart_outline_rounded),
+        icon: Icon(Ionicons.pie_chart_outline),
         label: 'Home',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.article_outlined),
+        icon: Icon(Ionicons.document_text_outline),
         label: 'Berita',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.qr_code),
+        icon: Icon(Ionicons.qr_code_outline),
         label: 'Scan QR',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.notifications_outlined),
+        icon: Icon(Ionicons.notifications_outline),
         label: 'Notifikasi',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.settings_outlined),
+        icon: Icon(Ionicons.settings_outline),
         label: 'Setting',
       ),
     ],

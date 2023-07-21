@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             onPressed: () {},
             icon: const Icon(
-              Icons.notifications_outlined,
+              Ionicons.notifications_outline,
               color: blackColor,
             ),
           ),
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(right: 18.0, left: 18.0),
                     child: Container(
                       width: size.width * 1,
-                      height: size.height * 0.25,
+                      height: size.height * 0.24,
                       decoration: const BoxDecoration(
                         color: whiteColor,
                         borderRadius: BorderRadius.only(
@@ -98,9 +98,9 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            padding: const EdgeInsets.symmetric(horizontal: 25),
                             alignment: Alignment.centerLeft,
-                            width: size.width * 0.75,
+                            width: size.width * 0.85,
                             height: size.height * 0.11,
                             child: const Text(
                               "Selamat Datang (Nama)",
