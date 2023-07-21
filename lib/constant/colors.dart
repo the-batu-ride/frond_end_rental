@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 const Color primaryColor = Color(0xffffe300);
-
 // dark Mode Color
 const Color blackColor = Color(0xff030108);
 const Color darkpurpleColor = Color(0xff161129);
