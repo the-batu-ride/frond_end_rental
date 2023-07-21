@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constant/colors.dart';
 import '../widget/BottomMenu.dart';
@@ -90,10 +91,10 @@ class _HomePageState extends State<HomePage> {
                             child: const Text(
                               "Selamat Datang (Nama)",
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 17),
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                              ),
                             ),
                           ),
                           const Padding(

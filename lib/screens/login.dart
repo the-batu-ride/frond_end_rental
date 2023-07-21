@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frond_end_rental/item/appbar_custom.dart';
-import 'package:frond_end_rental/item/footer_custom.dart';
+import 'package:frond_end_rental/widget/appbar_custom.dart';
+import 'package:frond_end_rental/widget/footer_custom.dart';
 
 class login extends StatelessWidget {
   @override
@@ -34,8 +34,7 @@ class login extends StatelessWidget {
                         TextField(
                           decoration: InputDecoration(
                               labelText: "No Handphone",
-                              hintText: "Masukan No Hp Anda"
-                              ),
+                              hintText: "Masukan No Hp Anda"),
                         ),
                         TextField(
                             decoration: InputDecoration(

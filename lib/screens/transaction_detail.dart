@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frond_end_rental/item/appbar_custom.dart';
+import 'package:frond_end_rental/widget/appbar_custom.dart';
 
 var status = true;
 var name = "khamal akbar";
@@ -8,6 +8,7 @@ var transactionkategori = "Shopping";
 var receipt = "true";
 var date = "sep 25, 2020 10:45 AM";
 var amount = "24";
+
 class transactionDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -40,74 +41,71 @@ class transactionDetail extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Status"),
-                          status == true ? Text("Success", style: TextStyle(color: Colors.green),) : Text("Failed", style: TextStyle(color: Colors.green))
+                          status == true
+                              ? Text(
+                                  "Success",
+                                  style: TextStyle(color: Colors.green),
+                                )
+                              : Text("Failed",
+                                  style: TextStyle(color: Colors.green))
                         ],
                       ),
                       Divider(
                         color: Colors.grey,
                         height: 20,
                       ),
-                        Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("To"),
-                         Text(name)
-                        ],
+                        children: [Text("To"), Text(name)],
                       ),
                       Divider(
                         color: Colors.black,
                         height: 20,
                       ),
-                       Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Bank Name"),
-                         Text(bankname)
-                        ],
+                        children: [Text("Bank Name"), Text(bankname)],
                       ),
                       Divider(
                         color: Colors.black,
                         height: 20,
                       ),
-                       Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Transaction Catagory"),
-                         Text(transactionkategori)
+                          Text(transactionkategori)
                         ],
                       ),
                       Divider(
                         color: Colors.black,
                         height: 20,
                       ),
-                       Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Receipt"),
-                          receipt == true?
-                         Text("yes"):Text("no")
+                          receipt == true ? Text("yes") : Text("no")
                         ],
                       ),
                       Divider(
                         color: Colors.black,
                         height: 20,
                       ),
-                       Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Date"),
-                         Text(date)
-                        ],
+                        children: [Text("Date"), Text(date)],
                       ),
                       Divider(
                         color: Colors.black,
                         height: 20,
                       ),
-                       Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Amount"),
-                         Text(amount, style: TextStyle(fontWeight: FontWeight.bold ))
+                          Text(amount,
+                              style: TextStyle(fontWeight: FontWeight.bold))
                         ],
                       ),
                       Divider(
