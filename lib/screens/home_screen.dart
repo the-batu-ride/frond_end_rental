@@ -3,7 +3,7 @@ import 'package:frond_end_rental/widget/items.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../constant/colors.dart';
-import '../widget/BottomMenu.dart';
+import '../widget/bottom_menu.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         backgroundColor: primaryColor,
         leading: Builder(
-          builder: (cont) => InkWell(
+          builder: (cont) => GestureDetector(
             onTap: () {
               Scaffold.of(cont).openDrawer();
             },
@@ -122,34 +122,34 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.only(
                                 top: 10, left: 20, right: 20),
                             child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  renderItemDashboard(
-                                    size: size,
-                                    title: 'Jadwal Event',
-                                    color: pinkEvent,
-                                    icons: Ionicons.calendar_outline,
-                                  ),
-                                  renderItemDashboard(
-                                    size: size,
-                                    title: 'Chat CS',
-                                    color: purpleChat,
-                                    icons: Ionicons.chatbox_ellipses_outline,
-                                  ),
-                                  renderItemDashboard(
-                                    size: size,
-                                    title: 'Package Route',
-                                    color: yellowBicycle,
-                                    icons: Ionicons.bicycle_outline,
-                                  ),
-                                  renderItemDashboard(
-                                    size: size,
-                                    title: 'Saldo',
-                                    color: greenSaldo,
-                                    icons: Ionicons.file_tray_outline,
-                                  ),
-                                ]),
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                renderItemDashboard(
+                                  size: size,
+                                  title: 'Jadwal Event',
+                                  color: pinkEvent,
+                                  icons: Ionicons.calendar_outline,
+                                ),
+                                renderItemDashboard(
+                                  size: size,
+                                  title: 'Chat CS',
+                                  color: purpleChat,
+                                  icons: Ionicons.chatbox_ellipses_outline,
+                                ),
+                                renderItemDashboard(
+                                  size: size,
+                                  title: 'Package Route',
+                                  color: yellowBicycle,
+                                  icons: Ionicons.bicycle_outline,
+                                ),
+                                renderItemDashboard(
+                                  size: size,
+                                  title: 'Saldo',
+                                  color: greenSaldo,
+                                  icons: Ionicons.file_tray_outline,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -159,8 +159,12 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             const Padding(
-              padding:
-                  EdgeInsets.only(top: 30.0, right: 20, left: 20, bottom: 10),
+              padding: EdgeInsets.only(
+                top: 30.0,
+                right: 20,
+                left: 20,
+                bottom: 10,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -171,9 +175,10 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     "View All",
                     style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                        color: mediumGreyColor),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      color: mediumGreyColor,
+                    ),
                   ),
                 ],
               ),
@@ -181,7 +186,9 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: bottomMenu(),
+      bottomNavigationBar: bottomMenu(
+        onQrResolve: (dataQr) {},
+      ),
     );
   }
 }

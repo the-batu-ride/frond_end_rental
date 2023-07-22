@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frond_end_rental/screens/HomeScreen.dart';
+import 'package:frond_end_rental/screens/home_screen.dart';
+import 'package:frond_end_rental/screens/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:frond_end_rental/transaction_vertification.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +21,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: GoogleFonts.poppins().fontFamily),
       home: const HomePage(),
+      routes: {
+        '/login': (context) => const Login(),
+      },
     );
   }
 }

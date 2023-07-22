@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:qr_bar_code_scanner_dialog/qr_bar_code_scanner_dialog.dart';
 import '../constant/colors.dart';
 
-BottomNavigationBar bottomMenu() {
+final _qrBarCodeScannerDialogPlugin = QrBarCodeScannerDialog();
+
+BottomNavigationBar bottomMenu({required Function(String?) onQrResolve}) {
   return BottomNavigationBar(
-    onTap: (value) {},
+    onTap: (value) {
+      if (value == 2) {
+        _qrBarCodeScannerDialogPlugin.getScannedQrBarCode(onCode: onQrResolve);
+      }
+    },
     currentIndex: 1,
     backgroundColor: whiteColor,
     selectedItemColor: purplekColor,
