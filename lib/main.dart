@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: GoogleFonts.poppins().fontFamily),
-      home: const HomePage(),
+      home:  const HomePage(),
       routes: {
         '/login': (context) => const Login(),
       },
