@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/widget/items.dart';
+import 'package:frond_end_rental/widget/route_bottom_sheet.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../constant/colors.dart';
@@ -136,12 +137,22 @@ class _HomePageState extends State<HomePage> {
                                   color: purpleChat,
                                   icons: Ionicons.chatbox_ellipses_outline,
                                 ),
-                                renderItemDashboard(
-                                  size: size,
-                                  title: 'Package Route',
-                                  color: yellowBicycle,
-                                  icons: Ionicons.bicycle_outline,
-                                ),
+                                Builder(builder: (context) {
+                                  return renderItemDashboard(
+                                    size: size,
+                                    title: 'Package Route',
+                                    color: yellowBicycle,
+                                    icons: Ionicons.bicycle_outline,
+                                    handleClick: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (ctx) {
+                                          return const PakcageBottomSheet();
+                                        },
+                                      );
+                                    },
+                                  );
+                                }),
                                 renderItemDashboard(
                                   size: size,
                                   title: 'Saldo',

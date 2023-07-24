@@ -6,9 +6,10 @@ Widget renderItemDashboard({
   required String title,
   required Color color,
   required IconData icons,
+  Function()? handleClick,
 }) {
   return GestureDetector(
-    onTap: () {},
+    onTap: handleClick,
     child: Container(
       alignment: Alignment.center,
       width: size.width * 0.150,

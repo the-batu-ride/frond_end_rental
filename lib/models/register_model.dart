@@ -4,10 +4,15 @@ class RegisterModel {
   String? lastName;
   String? adress;
   String? password;
-    
 
-  RegisterModel({this.email, this.firstName, this.lastName, this.adress, this.password});
-  
+  RegisterModel({
+    this.email,
+    this.firstName,
+    this.lastName,
+    this.adress,
+    this.password,
+  });
+
   Map<String, dynamic> toMap() {
     return {
       'first_name': firstName,
@@ -18,4 +23,3 @@ class RegisterModel {
     };
   }
 }
-
