@@ -14,6 +14,8 @@ const Color lightGreyColor = Color(0xffededf5);
 
 const Color mediumGreyColor = Color.fromARGB(255, 116, 116, 119);
 
+const Color purpleBalanceMenuColor = Color(0xff6610f2);
+
 // const Color _blackColor = Color(0xff030108);
 const Color purpleChat = Color(0xFF6236FF);
 const Color pinkEvent = Color(0xFFFF396F);
