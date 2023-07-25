@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
-import 'package:frond_end_rental/constant/conection.dart';
-import 'package:frond_end_rental/models/login_model.dart';
+import 'package:frond_end_rental/screens/daftar.dart';
 
 import '../constant/conection.dart';
 import '../models/login_model.dart';
@@ -44,68 +43,112 @@ class Login extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        color: Colors.white,
+        color: mediumGreyColor,
         width: size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.all(size.width * 0.1),
-              width: size.height * 0.2,
-              height: size.height * 0.2,
-              color: Colors.grey,
+        height: size.height,
+        child: Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: size.width * .8,
+            height: size.height * .8,
+            decoration: const BoxDecoration(
+                color: whiteColor,
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Login",
+                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
+                ),
+                const SizedBox(height: 40),
+                Container(
+                  margin: EdgeInsets.all(size.width * .09),
+                  child: Column(
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: "No Telfon",
+                          hintText: "No Telfon",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          hintText: "Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: MediaQuery.of(context).size.height * .059,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            loginClick();
+                          },
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  18.0), // Adjust the value as needed
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Belum Punya Akun?",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Daftar(),
+                                ),
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                            ),
+                            child: const Text(
+                              "Daftar",
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
             ),
-            const Text("Login"),
-            const Text("Silahkan Login terlebih dahulu"),
-            Container(
-              margin: EdgeInsets.all(size.width * 0.1),
-              child: Column(
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "No Handphone",
-                      hintText: "Masukan No Hp Anda",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Enter Name',
-                      hintText: "Masukan Password Anda",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        right: MediaQuery.of(context).size.width * 0.05,
-                        bottom: MediaQuery.of(context).size.width * 0.05),
-                    width: MediaQuery.of(context).size.width * .9,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        loginClick();
-                      },
-                      child: Text("Login"),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

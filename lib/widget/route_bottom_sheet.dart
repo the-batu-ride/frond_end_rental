@@ -126,6 +126,39 @@ class _PakcageBottomSheetState extends State<PakcageBottomSheet> {
                                   const SizedBox(width: 15),
                                   SizedBox(
                                     width: size.width - 140,
+                                    child: DropdownSearch<Package>(
+                                      dropdownDecoratorProps:
+                                          const DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          hintText: 'Choose Package',
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                      items: Package.toModels(packages),
+                                      onChanged: (value) {
+                                        context
+                                            .read<TransactionProvider>()
+                                            .setPackage(value!.id);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              right: 20,
+                              left: 20,
+                              bottom: 20,
+                            ),
+                            child: GeneralInput(
+                              customInput: Row(
+                                children: [
+                                  const SizedBox(width: 15),
+                                  SizedBox(
+                                    width: size.width - 140,
                                     child: DropdownButton(
                                       dropdownColor: Colors.white,
                                       hint: const Text('Choose Payment Method'),
@@ -153,30 +186,6 @@ class _PakcageBottomSheetState extends State<PakcageBottomSheet> {
                                     ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 20,
-                              left: 20,
-                              bottom: 20,
-                            ),
-                            child: GeneralInput(
-                              customInput: DropdownSearch<Package>(
-                                dropdownDecoratorProps:
-                                    const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    hintText: 'Choose Package',
-                                    border: InputBorder.none,
-                                  ),
-                                ),
-                                items: Package.toModels(packages),
-                                onChanged: (value) {
-                                  context
-                                      .read<TransactionProvider>()
-                                      .setPackage(value!.id);
-                                },
                               ),
                             ),
                           ),
