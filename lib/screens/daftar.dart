@@ -48,7 +48,7 @@ class Daftar extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        color: greyColor,
+        color: whiteColor,
         width: size.width,
         child: ListView(
           children: [
@@ -79,54 +79,96 @@ class Daftar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   width: size.width * 0.8,
-                  margin: EdgeInsets.all(size.width * 0.1),
+                  margin: EdgeInsets.all(size.width * 0.01),
                   child: Container(
                     margin: EdgeInsets.all(size.width * 0.05),
                     child: Column(children: [
                       TextField(
                         controller: emailText,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: "E-Mail",
                           hintText: "Your e-mail",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 20),
                       TextField(
                         controller: firstName,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'First Name',
                           hintText: "First Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 20),
                       TextField(
                         controller: lastname,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Last Name',
                           hintText: "Last Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 20),
                       TextField(
                         controller: alamat,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Adress',
                           hintText: "Adress",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 20),
                       TextField(
                         obscureText: true,
                         controller: password,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Password',
                           hintText: "Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 20),
                       TextField(
                         obscureText: true,
                         controller: confirmPassword,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Confirm Password',
                           hintText: "Confirm Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      )
+                      ),
+                      const SizedBox(height: 20),
                     ]),
                   ),
                 ),

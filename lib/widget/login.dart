@@ -67,33 +67,37 @@ class login extends StatelessWidget {
                 ),
               ),
               Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                width: MediaQuery.of(context).size.width * 0.8,
-                margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
-                child: Container(
-                  margin:
-                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                  child: Column(children: [
-                    TextField(
-                      controller: email,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: "Email",
-                          hintText: "Masukan Email Anda"),
+                margin:
+                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                child: Column(children: [
+                  TextFormField(
+                    controller: email,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      hintText: "Masukan Email Anda",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    TextField(
-                        controller: password,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            labelText: 'Password',
-                            hintText: "Masukan Password Anda"))
-                  ]),
-                ),
+                  ),
+                  TextFormField(
+                    controller: password,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      hintText: "Masukan Password Anda",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  )
+                ]),
               ),
               Container(
                 margin: EdgeInsets.only(
