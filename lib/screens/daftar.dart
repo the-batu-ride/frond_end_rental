@@ -48,31 +48,25 @@ class Daftar extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        color: whiteColor,
+        color: mediumGreyColor,
         width: size.width,
-        child: ListView(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+        height: size.height,
+        child: Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: size.width * .8,
+            height: size.height * .8,
+            decoration: const BoxDecoration(
+                color: whiteColor,
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.all(size.width * 0.1),
-                  width: size.height * 0.2,
-                  height: size.height * 0.2,
-                  color: Colors.grey,
-                ),
                 const Text(
-                  "Register Now",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  "Register",
+                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
                 ),
-                const Text(
-                  "Create an account",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
+                const SizedBox(height: 40),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -96,7 +90,7 @@ class Daftar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       TextField(
                         controller: firstName,
                         decoration: InputDecoration(
@@ -110,7 +104,7 @@ class Daftar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       TextField(
                         controller: lastname,
                         decoration: InputDecoration(
@@ -124,7 +118,7 @@ class Daftar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       TextField(
                         controller: alamat,
                         decoration: InputDecoration(
@@ -138,7 +132,7 @@ class Daftar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       TextField(
                         obscureText: true,
                         controller: password,
@@ -153,7 +147,7 @@ class Daftar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       TextField(
                         obscureText: true,
                         controller: confirmPassword,
@@ -168,7 +162,7 @@ class Daftar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                     ]),
                   ),
                 ),
@@ -178,23 +172,30 @@ class Daftar extends StatelessWidget {
                     right: size.width * 0.05,
                   ),
                 ),
+                const SizedBox(height: 50),
                 Container(
-                  margin: EdgeInsets.only(
-                    left: size.width * 0.05,
-                    right: size.width * 0.05,
-                    bottom: size.width * 0.05,
-                  ),
-                  width: size.width,
+                  width: MediaQuery.of(context).size.width * .7,
+                  height: MediaQuery.of(context).size.height * .059,
                   child: ElevatedButton(
                     onPressed: () {
                       daftarClick(context);
                     },
-                    child: Text("Daftar"),
+                    child: Text(
+                      "Register",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            18.0), // Adjust the value as needed
+                      ),
+                    ),
                   ),
-                )
+                ),
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );
