@@ -7,12 +7,13 @@ import '../constant/conection.dart';
 import '../models/login_model.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  Login({super.key});
+
+  final email = TextEditingController();
+  final password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final email = TextEditingController();
-    final password = TextEditingController();
     Future<void> loginClick() async {
       Dio dio = Dio();
       var url = "${apiConnection}api/v1/auth/signin";
@@ -31,12 +32,6 @@ class Login extends StatelessWidget {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         storage.setString('token', response.data['data']['access_token']);
-      }
-    }
-
-    void daftarClick(BuildContext context) {
-      if (context.mounted) {
-        Navigator.of(context).pushReplacementNamed('/daftar');
       }
     }
 
@@ -68,8 +63,8 @@ class Login extends StatelessWidget {
                     children: [
                       TextField(
                         decoration: InputDecoration(
-                          labelText: "No Telfon",
-                          hintText: "No Telfon",
+                          labelText: "Email",
+                          hintText: "Email",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -99,18 +94,17 @@ class Login extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 1,
                         height: MediaQuery.of(context).size.height * .059,
                         child: ElevatedButton(
-                          onPressed: () {
-                            loginClick();
-                          },
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
+                          onPressed: loginClick,
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  18.0), // Adjust the value as needed
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                          ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -138,7 +132,9 @@ class Login extends StatelessWidget {
                             child: const Text(
                               "Daftar",
                               style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w600),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],

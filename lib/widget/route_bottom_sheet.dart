@@ -215,19 +215,14 @@ class _PakcageBottomSheetState extends State<PakcageBottomSheet> {
 
                                   if (response.statusCode == 201) {
                                     if (context.mounted) {
-                                      if (provide.paymentMethod != "CASH") {
+                                      setCurrentNavigation(
+                                        response.data['data']['id'],
+                                      ).then((_) {
                                         Navigator.of(context)
                                             .pushReplacementNamed(
                                           '/verification',
-                                          arguments: response.data['data'],
                                         );
-                                      } else {
-                                        Navigator.of(context)
-                                            .pushReplacementNamed(
-                                          '/map',
-                                          arguments: response.data['data'],
-                                        );
-                                      }
+                                      });
                                     }
                                   }
                                 } on DioException catch (e) {

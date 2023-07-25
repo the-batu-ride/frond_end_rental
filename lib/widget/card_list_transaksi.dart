@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
+import 'package:frond_end_rental/constant/conection.dart';
 import 'package:frond_end_rental/utils/format_rupiah.dart';
 
 Widget cardListTransaksi(
@@ -13,18 +14,28 @@ Widget cardListTransaksi(
 }) {
   return Builder(builder: (context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        final id = data['id'];
+
         if (status == "APPROVED") {
-          Navigator.of(context).pushNamed('/map', arguments: package);
+          setCurrentNavigation(id).then((_) {
+            Navigator.of(context).pushNamed('/map');
+          });
           return;
         }
 
         if (status == "COMPLETED") {
-          Navigator.of(context).pushNamed('/detail-transaction');
+          setCurrentDetail(id).then((_) {
+            Navigator.of(context).pushNamed('/detail-transaction');
+          });
+          return;
         }
 
         if (status == "PENDING") {
-          Navigator.of(context).pushNamed('/verification', arguments: data);
+          setCurrentPayment(id).then((_) {
+            Navigator.of(context).pushNamed('/verification');
+          });
+          return;
         }
       },
       child: Column(

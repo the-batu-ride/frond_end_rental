@@ -20,7 +20,7 @@ class _ListTransaksiState extends State<ListTransaksi> {
   void getHistoryTransaction() async {
     final token = await getToken();
     final response = await client.get<Map<String, dynamic>>(
-      'http://localhost:9000/api/v1/transaction',
+      '${apiConnection}api/v1/transaction',
       options: Options(headers: {'Authorization': 'Bearer $token'}),
     );
 
@@ -93,7 +93,7 @@ class _ListTransaksiState extends State<ListTransaksi> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 50, right: 50),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SizedBox(

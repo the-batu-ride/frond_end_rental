@@ -18,9 +18,12 @@ void main() async {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJyZW5kaSByZW4iLCJpYXQiOjE2OTAyNjQ2NzEsImV4cCI6MTY5MDQzNzQ3MX0.gVmoXAve0ANsSoDA7-UhSCJimJbM_hc84IiMvSGQjgc');
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+      ChangeNotifierProvider<UserProvider>(
+        create: (_) => UserProvider(),
+      ),
       ChangeNotifierProvider<TransactionProvider>(
-          create: (_) => TransactionProvider())
+        create: (_) => TransactionProvider(),
+      )
     ],
     child: const MyApp(),
   ));
@@ -37,19 +40,13 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: HomePage(),
       routes: {
-        '/login': (context) => const Login(),
+        '/login': (context) => Login(),
         '/daftar': (context) => Daftar(),
         '/detail-transaction': (context) => const TransactionDetail(),
-        '/verification': (context) => TransactionVerification(
-              data: ModalRoute.of(context)!.settings.arguments
-                  as Map<String, dynamic>,
-            ),
-        '/map': (context) => MapScreen(
-              package: ModalRoute.of(context)!.settings.arguments
-                  as Map<String, dynamic>?,
-            ),
+        '/verification': (context) => const TransactionVerification(),
+        '/map': (context) => const MapScreen(),
         '/history': (context) => const ListTransaksi()
       },
     );
