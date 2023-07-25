@@ -27,7 +27,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
     if (picked != null) {
       var stream = await picked.readAsBytes();
 
-      if (((stream.lengthInBytes / 1024) / 1024) > 1) {
+      if (((stream.lengthInBytes / 2048) / 2048) > 1) {
         throw Exception('Gambar tidak boleh lebih dari 1MB!');
       }
 
@@ -140,7 +140,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                   padding: const EdgeInsets.only(top: 20),
                   margin: EdgeInsets.all(size.width * 0.02),
                   child: SizedBox(
-                    width: size.width * 0.45,
+                    width: size.width * 0.6,
                     height: size.height * 0.07,
                     child: ElevatedButton(
                       onPressed: () async {
@@ -168,7 +168,16 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                           );
                         }
                       },
-                      child: const Text("Confirm"),
+                      child: const Text(
+                        "Confirm",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              18.0), // Adjust the value as needed
+                        ),
+                      ),
                     ),
                   ),
                 ),
