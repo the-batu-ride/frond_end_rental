@@ -14,6 +14,7 @@ class DrawerValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+ 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
@@ -24,7 +25,7 @@ class DrawerValue extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: size.width * .38,
+                  width: 190,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
