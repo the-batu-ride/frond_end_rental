@@ -17,7 +17,7 @@ class TransactionDetail extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBarCustom("Transaction Detail", Icons.delete),
+      appBar: AppBarCustom("Transaction Detail", Icons.delete, context),
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: Column(

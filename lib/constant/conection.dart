@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const apiConnection = "http://192.168.1.10:9000/";
+const apiConnection = "http://localhost:9000/";
 // final FlutterSecureStorage accessToken =  FlutterSecureStorage();
 
 final client = Dio();

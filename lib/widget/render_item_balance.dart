@@ -11,14 +11,14 @@ Widget renderItemBalance({
     child: Container(
       alignment: Alignment.center,
       width: size.width * 0.150,
-      height: size.height * 0.085,
+      height: size.height * 0.105,
       child: Column(
         children: [
           Align(
             alignment: Alignment.center,
             child: Container(
-              width: 46,
-              height: 46,
+              width: 45,
+              height: 45,
               decoration: BoxDecoration(
                 color: purpleBalanceMenuColor,
                 borderRadius: BorderRadius.circular(25),

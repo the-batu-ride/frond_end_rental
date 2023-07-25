@@ -13,6 +13,7 @@ const Color whiteColor = Color.fromARGB(255, 255, 255, 255);
 const Color lightGreyColor = Color(0xffededf5);
 
 const Color mediumGreyColor = Color.fromARGB(255, 116, 116, 119);
+const Color greenPrimary = Color(0xFF00A884);
 
 const Color purpleBalanceMenuColor = Color(0xff6610f2);
 

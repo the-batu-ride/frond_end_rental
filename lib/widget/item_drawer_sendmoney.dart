@@ -14,7 +14,7 @@ Widget ItemDrawerSendMoney({
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: size.width * .50,
+          width: size.width * .55,
           child: Row(
             children: [
               ClipRRect(

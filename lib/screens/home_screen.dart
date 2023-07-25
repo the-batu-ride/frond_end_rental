@@ -1,8 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:frond_end_rental/constant/conection.dart';
+import 'package:frond_end_rental/provider/transaction_provider.dart';
+import 'package:frond_end_rental/utils/security.dart';
 import 'package:frond_end_rental/widget/items.dart';
 import 'package:frond_end_rental/widget/route_bottom_sheet.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
 
 import '../constant/colors.dart';
 import '../widget/bottom_menu.dart';
@@ -241,7 +245,30 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: bottomMenu(
-        onQrResolve: (dataQr) {},
+        onQrResolve: (dataQr) async {
+          final newId = dataQr!.replaceFirst(RegExp('Code scanned = '), '');
+          final id = encryptId(int.parse(newId));
+
+          final token = await getToken();
+          final response = await client.get(
+            '${apiConnection}api/v1/bike/$id',
+            options: Options(headers: {'Authorization': 'Bearer $token'}),
+          );
+
+          if (context.mounted) {
+            context
+                .read<TransactionProvider>()
+                .setBike(response.data['data']['id']);
+
+            showModalBottomSheet(
+              context: context,
+              builder: (ctx) => const PakcageBottomSheet(),
+            );
+          }
+        },
+        toTrans: () {
+          Navigator.of(context).pushNamed('/history');
+        },
       ),
     );
   }

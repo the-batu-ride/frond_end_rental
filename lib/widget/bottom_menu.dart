@@ -5,11 +5,18 @@ import '../constant/colors.dart';
 
 final _qrBarCodeScannerDialogPlugin = QrBarCodeScannerDialog();
 
-BottomNavigationBar bottomMenu({required Function(String?) onQrResolve}) {
+BottomNavigationBar bottomMenu({
+  required Function(String?) onQrResolve,
+  required Function() toTrans,
+}) {
   return BottomNavigationBar(
     onTap: (value) {
       if (value == 2) {
         _qrBarCodeScannerDialogPlugin.getScannedQrBarCode(onCode: onQrResolve);
+      }
+
+      if (value == 1) {
+        toTrans();
       }
     },
     currentIndex: 1,
@@ -23,7 +30,7 @@ BottomNavigationBar bottomMenu({required Function(String?) onQrResolve}) {
       ),
       BottomNavigationBarItem(
         icon: Icon(Ionicons.document_text_outline),
-        label: 'Berita',
+        label: 'Transaction',
       ),
       BottomNavigationBarItem(
         icon: Icon(Ionicons.qr_code_outline),

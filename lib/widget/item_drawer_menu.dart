@@ -15,7 +15,7 @@ Widget ItemDrawerMenu({
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: size.width * .36,
+          width: size.width * .50,
           child: Row(
             children: [
               Align(
@@ -38,14 +38,17 @@ Widget ItemDrawerMenu({
                 margin: const EdgeInsets.only(left: 13),
                 child: Text(
                   title,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             ],
           ),
         ),
         Container(
-          padding: EdgeInsets.only(bottom: 5),
+          padding: const EdgeInsets.only(bottom: 5),
           child: IconButton(
             onPressed: () {},
             icon: const Icon(
