@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
+import 'package:frond_end_rental/utils/format_rupiah.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -53,7 +54,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
 
     clientSocket.on('on_change_status_order', (data) {
       if (data['status'] == "APPROVED" && data['code'] == data['code']) {
-        setCurrentNavigation(data['id']).then((value) {
+        setCurrentNavigation(this.data?['id']).then((value) {
           Navigator.of(context).pushReplacementNamed('/map');
         });
       }
@@ -196,72 +197,134 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.center,
+                    width: size.width * .65,
+                    decoration: const BoxDecoration(
+                        color: purpleChat,
+                        borderRadius: BorderRadius.all(Radius.circular(12))),
+                    child: const Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Transfer ke Bank BARI",
+                              style: TextStyle(fontSize: 10, color: whiteColor),
+                            ),
+                            Text(
+                              "2212143121312",
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: whiteColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.center,
+                    width: size.width * .65,
+                    decoration: const BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.all(Radius.circular(12))),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Nama Paket",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            Text(
+                              data?['package']['name'],
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Harga",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            Text(
+                              formatRupiah(
+                                double.parse(data?['package']['price']),
+                              ),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: size.width * 0.31,
-                        height: size.height * 0.07,
-                        child: ElevatedButton(
-                          onPressed: () async {},
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                          ),
-                          child: const Text(
-                            "Cancel",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: size.width * 0.31,
-                        height: size.height * 0.07,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (bukti == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 202, 70, 60),
-                                  content: Text('Upload terlebih dahulu'),
-                                ),
-                              );
-                            } else {
-                              uploadTransferBill(
-                                bukti!,
-                                encryptId(data?['id']),
-                              ).then((value) {
+                      Container(
+                        margin: EdgeInsets.all(size.width * 0.02),
+                        child: SizedBox(
+                          width: size.width * 0.65,
+                          height: size.height * 0.07,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (bukti == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    backgroundColor: greenPrimary,
-                                    content: Text(
-                                      'Success silah tunggu beberapa saat',
-                                    ),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 202, 70, 60),
+                                    content: Text('Upload terlebih dahulu'),
                                   ),
                                 );
-                              });
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: greenPrimary,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
+                              } else {
+                                uploadTransferBill(
+                                  bukti!,
+                                  encryptId(data?['id']),
+                                ).then((value) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor: greenPrimary,
+                                      content: Text(
+                                        'Success silah tunggu beberapa saat',
+                                      ),
+                                    ),
+                                  );
+                                });
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    18.0), // Adjust the value as needed
+                              ),
                             ),
-                          ),
-                          child: const Text(
-                            "Confirm",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            child: const Text(
+                              "Confirm",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      // Add space between the buttons
                     ],
-                  ),
+                  )
                 ],
               ),
             ),
