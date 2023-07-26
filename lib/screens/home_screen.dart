@@ -74,13 +74,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Ionicons.notifications_outline,
-              color: blackColor,
-            ),
-          ),
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(
+          //     Ionicons.notifications_outline,
+          //     color: blackColor,
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(
                 left: 8.0, top: 8.0, bottom: 8.0, right: 20.0),

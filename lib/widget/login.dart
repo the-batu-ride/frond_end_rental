@@ -40,7 +40,7 @@ class login extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-          color: greyColor,
+          color: mediumGreyColor,
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
