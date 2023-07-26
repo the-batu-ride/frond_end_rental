@@ -1,11 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const apiConnection = "http://localhost:9000/";
-// final FlutterSecureStorage accessToken =  FlutterSecureStorage();
 
 final client = Dio();
 

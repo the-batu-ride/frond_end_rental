@@ -103,11 +103,9 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Rute "),
+        title: const Text("Rute "),
       ),
       body: preLoad
           ? const Center(

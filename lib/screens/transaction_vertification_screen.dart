@@ -129,6 +129,8 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                       } on Exception catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
+                            backgroundColor:
+                                const Color.fromARGB(255, 202, 70, 60),
                             content: Text(e.toString()),
                           ),
                         );
@@ -193,6 +195,8 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                             if (bukti == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 202, 70, 60),
                                   content: Text('Upload terlebih dahulu'),
                                 ),
                               );
