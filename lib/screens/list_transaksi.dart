@@ -93,7 +93,7 @@ class _ListTransaksiState extends State<ListTransaksi> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 50, right: 50),
+        padding: const EdgeInsets.only(left: 40, right: 40),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SizedBox(
@@ -106,7 +106,9 @@ class _ListTransaksiState extends State<ListTransaksi> {
                 ),
                 const Text(
                   "Today",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(
                   height: 7,

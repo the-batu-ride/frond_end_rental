@@ -49,30 +49,6 @@ class _TransactionVerificationState extends State<TransactionVerification> {
           Container(
             height: size.width * 0.05,
           ),
-          Container(
-            margin: const EdgeInsets.all(2),
-            child: const Text(
-              "Amount",
-              style: TextStyle(fontSize: 10),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(5),
-            child: Text(
-              formatRupiah(double.parse(widget.data['package']['price'])),
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(5),
-            child: const Text(
-              "Upload Bukti",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
           GestureDetector(
             onTap: () async {
               try {
@@ -100,6 +76,16 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                 ),
                 height: 230,
                 margin: const EdgeInsets.all(20),
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 5, bottom: 5),
+            child: const Text(
+              "Upload Bukti",
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

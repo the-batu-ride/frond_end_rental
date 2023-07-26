@@ -33,7 +33,7 @@ Widget cardListTransaksi(
             height: 4,
           ),
           Container(
-            padding: const EdgeInsets.all(17),
+            padding: const EdgeInsets.all(10),
             width: size.width * 1,
             decoration: BoxDecoration(
               color: whiteColor,
