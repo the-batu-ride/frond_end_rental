@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
+import 'package:frond_end_rental/provider/transaction_provider.dart';
 import 'package:frond_end_rental/utils/auth_uril.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:frond_end_rental/widget/route_bottom_sheet.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -55,53 +57,52 @@ class _MapScreenState extends State<MapScreen> {
         Navigator.of(context).pushReplacementNamed('/');
         return;
       }
+    });
 
-      getCurrentNavigation().then((value) {
-        if (value == null) {
-          Navigator.of(context).pop();
-        } else {
-          getDataPackage(value).then((response) {
-            var startL = LatLng(
-              double.parse(response['package']['lat_start']),
-              double.parse(response['package']['lngt_start']),
-            );
-            var endL = LatLng(
-              double.parse(response['package']['lat_destination']),
-              double.parse(response['package']['lngt_destination']),
-            );
+    getCurrentNavigation().then((value) {
+      if (value == null) {
+        Navigator.of(context).pop();
+      } else {
+        getDataPackage(value).then((response) {
+          var startL = LatLng(
+            double.parse(response['package']['lat_start']),
+            double.parse(response['package']['lngt_start']),
+          );
+          var endL = LatLng(
+            double.parse(response['package']['lat_destination']),
+            double.parse(response['package']['lngt_destination']),
+          );
 
-            setState(() {
-              data = response;
-              startEnds = [startL, endL];
-              preLoad = false;
-            });
+          setState(() {
+            data = response;
+            startEnds = [startL, endL];
+            preLoad = false;
+          });
 
-            getRoute(startL, endL).then((_) async {
-              await Geolocator.requestPermission();
+          getRoute(startL, endL).then((_) async {
+            await Geolocator.requestPermission();
 
-              _timer =
-                  Timer.periodic(const Duration(seconds: 5), (timer) async {
-                final position = await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.bestForNavigation,
-                );
+            _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+              final position = await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.bestForNavigation,
+              );
 
-                setState(() {
-                  currentLoc = LatLng(position.latitude, position.longitude);
-                });
+              setState(() {
+                currentLoc = LatLng(position.latitude, position.longitude);
               });
             });
-          }).catchError((err) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(err.toString()),
-                backgroundColor: const Color.fromARGB(255, 211, 65, 54),
-              ),
-            );
-            Navigator.of(context).pop();
           });
-        }
-      }).catchError((err) {});
-    });
+        }).catchError((err) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(err.toString()),
+              backgroundColor: const Color.fromARGB(255, 211, 65, 54),
+            ),
+          );
+          Navigator.of(context).pop();
+        });
+      }
+    }).catchError((err) {});
 
     super.initState();
   }
@@ -243,6 +244,10 @@ class _MapScreenState extends State<MapScreen> {
                         const SizedBox(width: 16.0),
                         ElevatedButton(
                           onPressed: () {
+                            context
+                                .read<TransactionProvider>()
+                                .setBike(data['bike']['id']);
+
                             markAsDone(encryptId(data['id'])).then((value) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
