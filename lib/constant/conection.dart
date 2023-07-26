@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,6 +65,27 @@ Future<bool> markAsDone(String id) async {
     final response = await client.patch(
       '${apiConnection}api/v1/transaction/$id',
       data: data,
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+    );
+    return response.data['data'] as bool;
+  } on DioException catch (_) {
+    rethrow;
+  }
+}
+
+Future<bool> uploadTransferBill(Map<String, dynamic> file, String id) async {
+  try {
+    final token = await getToken();
+    final response = await client.post(
+      '${apiConnection}api/v1/transaction/$id/checkout',
+      data: FormData.fromMap({
+        'transfer_bill': MultipartFile.fromBytes(
+          file['binary'],
+          filename: file['name'],
+        )
+      }),
       options: Options(
         headers: {'Authorization': 'Bearer $token'},
       ),

@@ -1,11 +1,11 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
-import 'package:frond_end_rental/widget/appbar_custom.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:frond_end_rental/utils/security.dart';
 import 'package:ionicons/ionicons.dart';
 
 class TransactionVerification extends StatefulWidget {
@@ -17,25 +17,33 @@ class TransactionVerification extends StatefulWidget {
 }
 
 class _TransactionVerificationState extends State<TransactionVerification> {
-  File? bukti;
+  Map<String, dynamic>? bukti;
   bool preLoad = true;
   Map<String, dynamic>? data;
 
-  Future<String> pickImageFromGalery() async {
-    var picker = ImagePicker();
-    var picked = await picker.pickImage(source: ImageSource.gallery);
-
-    if (picked != null) {
-      var stream = await picked.readAsBytes();
-
-      if (((stream.lengthInBytes / 1024) / 1024) > 2) {
-        throw Exception('Gambar tidak boleh lebih dari 2MB!');
+  Future<dynamic> pickImageFromGalery() async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null) {
+      if (result.files.isNotEmpty) {
+        final file = result.files.single;
+        final Uint8List? fileBytes = file.bytes;
+        if (fileBytes != null) {
+          return {'binary': fileBytes, 'name': file.name};
+        }
       }
-
-      return picked.path;
     }
 
-    throw Exception('Terdapat kesalahan');
+    throw Exception('Gagal mengambil bukti');
+  }
+
+  ImageProvider getImage() {
+    if (bukti == null) {
+      return const NetworkImage(
+        'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg',
+      );
+    } else {
+      return MemoryImage(bukti?['binary']);
+    }
   }
 
   @override
@@ -83,7 +91,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
           ),
         ),
         title: const Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "Transactions Verification",
@@ -116,7 +124,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                       try {
                         final path = await pickImageFromGalery();
                         setState(() {
-                          bukti = File(path);
+                          bukti = path;
                         });
                       } on Exception catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -142,6 +150,9 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                             width: 210,
                             height: 210,
                             margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: getImage()),
+                            ),
                             child: const Center(
                               child: Text(
                                 "Upload Pembayaran",
@@ -178,7 +189,29 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                         width: size.width * 0.31,
                         height: size.height * 0.07,
                         child: ElevatedButton(
-                          onPressed: () async {},
+                          onPressed: () {
+                            if (bukti == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Upload terlebih dahulu'),
+                                ),
+                              );
+                            } else {
+                              uploadTransferBill(
+                                bukti!,
+                                encryptId(data?['id']),
+                              ).then((value) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor: greenPrimary,
+                                    content: Text(
+                                      'Success silah tunggu beberapa saat',
+                                    ),
+                                  ),
+                                );
+                              });
+                            }
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: greenPrimary,
                             foregroundColor: Colors.white,
