@@ -6,6 +6,7 @@ import 'package:frond_end_rental/screens/home_screen.dart';
 import 'package:frond_end_rental/screens/list_transaksi.dart';
 import 'package:frond_end_rental/screens/login_screen.dart';
 import 'package:frond_end_rental/screens/map_screen.dart';
+import 'package:frond_end_rental/screens/profile_screen.dart';
 import 'package:frond_end_rental/screens/transaction_detail_screen.dart';
 import 'package:frond_end_rental/screens/transaction_vertification_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
         '/detail-transaction': (context) => const TransactionDetail(),
         '/verification': (context) => const TransactionVerification(),
         '/map': (context) => const MapScreen(),
-        '/history': (context) => const ListTransaksi()
+        '/history': (context) => const ListTransaksi(),
+        '/profile':(context) => ProfileScreen()
       },
     );
   }
