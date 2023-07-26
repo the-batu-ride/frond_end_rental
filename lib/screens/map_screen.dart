@@ -26,6 +26,7 @@ class _MapScreenState extends State<MapScreen> {
   Map<String, dynamic> data = {};
   LatLng? currentLoc;
   Timer? _timer;
+  double? distance;
 
   Future<dynamic> getRoute(LatLng start, LatLng end) async {
     var v1 = start.latitude;
@@ -90,6 +91,17 @@ class _MapScreenState extends State<MapScreen> {
               setState(() {
                 currentLoc = LatLng(position.latitude, position.longitude);
               });
+
+              final putDistance = Geolocator.distanceBetween(
+                currentLoc!.latitude,
+                currentLoc!.longitude,
+                startEnds[1].latitude,
+                startEnds[1].longitude,
+              );
+
+              setState(() {
+                distance = putDistance;
+              });
             });
           });
         }).catchError((err) {
@@ -125,6 +137,17 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Rute"),
+        leading: Builder(
+          builder: (cont) => GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed('/history');
+            },
+            child: const Icon(
+              Ionicons.chevron_back_outline,
+              color: blackColor,
+            ),
+          ),
+        ),
       ),
       body: preLoad
           ? const Center(
@@ -199,102 +222,105 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                   ],
                 ),
-                Positioned(
-                  bottom: 16.0,
-                  left: 16.0,
-                  right: 16.0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 12.0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.09),
-                          offset: Offset(0, 1),
-                          blurRadius: 1,
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return const PakcageBottomSheet();
-                              },
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 92, 92, 92),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
+                (distance != null && distance! >= 40)
+                    ? Positioned(
+                        bottom: 16.0,
+                        left: 16.0,
+                        right: 16.0,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 12.0,
                           ),
-                          child: const Text(
-                            "Extend Paket",
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.09),
+                                offset: Offset(0, 1),
+                                blurRadius: 1,
+                                spreadRadius: 0,
+                              )
+                            ],
                           ),
-                        ),
-                        const SizedBox(width: 16.0),
-                        ElevatedButton(
-                          onPressed: () {
-                            context
-                                .read<TransactionProvider>()
-                                .setBike(data['bike']['id']);
-
-                            markAsDone(encryptId(data['id'])).then((value) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Sukses'),
-                                  backgroundColor: greenPrimary,
-                                ),
-                              );
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/history');
-                            }).catchError((err) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return const PakcageBottomSheet();
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
                                   backgroundColor:
-                                      const Color.fromARGB(255, 211, 65, 54),
-                                  content: Text(
-                                    err.toString(),
+                                      const Color.fromARGB(255, 92, 92, 92),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
-                              );
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: greenPrimary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          child: const Text(
-                            "Mark Selesai",
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                child: const Text(
+                                  "Extend Paket",
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16.0),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context
+                                      .read<TransactionProvider>()
+                                      .setBike(data['bike']['id']);
+
+                                  markAsDone(encryptId(data['id']))
+                                      .then((value) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Sukses'),
+                                        backgroundColor: greenPrimary,
+                                      ),
+                                    );
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('/history');
+                                  }).catchError((err) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 211, 65, 54),
+                                        content: Text(
+                                          err.toString(),
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: greenPrimary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Mark Selesai",
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                      )
+                    : const SizedBox(),
               ],
             ),
     );

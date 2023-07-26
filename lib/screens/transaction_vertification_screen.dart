@@ -24,7 +24,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
   bool preLoad = true;
   bool isPaid = false;
   Map<String, dynamic>? data;
-  final clientSocket = io(socketServer);
+  final clientSocket = io(socketServer).connect();
 
   Future<dynamic> pickImageFromGalery() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -54,13 +54,16 @@ class _TransactionVerificationState extends State<TransactionVerification> {
   }
 
   void initSocket(BuildContext context) {
-    clientSocket.connect();
-
     clientSocket.on('on_change_status_order', (data) {
-      print(data);
-      if (data['status'] == "APPROVED" && data['code'] == data['code']) {
+      if (data['status'] == "APPROVED" && this.data?['code'] == data['code']) {
         setCurrentNavigation(this.data?['id']).then((value) {
           Navigator.of(context).pushReplacementNamed('/map');
+        });
+      } else if (data['status'] == "REJECTED" &&
+          this.data?['code'] == data['code']) {
+        getStorage().then((value) {
+          value.remove('navigation');
+          Navigator.of(context).pushReplacementNamed('/history');
         });
       }
     });
@@ -81,14 +84,6 @@ class _TransactionVerificationState extends State<TransactionVerification> {
         } else {
           try {
             final response = await getDataPackage(value);
-
-            if (response['status'] == "APPROVED") {
-              await setCurrentNavigation(response['id']);
-              if (context.mounted) {
-                Navigator.of(context).pushReplacementNamed('/map');
-              }
-            }
-
             setState(() {
               data = response;
               isPaid = response['payment']['payment_bill'] != null;
@@ -105,17 +100,10 @@ class _TransactionVerificationState extends State<TransactionVerification> {
           }
         }
       });
-
-      initSocket(context);
     });
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    clientSocket.dispose();
-    super.dispose();
+    initSocket(context);
   }
 
   @override

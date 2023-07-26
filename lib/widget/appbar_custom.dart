@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
 class AppBarCustom extends AppBar {
   final BuildContext context;
@@ -15,10 +16,11 @@ class AppBarCustom extends AppBar {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(path);
-              },
-              icon: const Icon(Icons.arrow_back)),
+            onPressed: () {
+              Navigator.of(context).pushNamed(path);
+            },
+            icon: const Icon(Ionicons.chevron_back_outline),
+          ),
           elevation: 0,
         );
 }

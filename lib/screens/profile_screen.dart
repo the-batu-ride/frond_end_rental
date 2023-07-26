@@ -141,6 +141,7 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: bottomMenu(
+        context: context,
         onQrResolve: (dataQr) async {
           final newId = dataQr!.replaceFirst(RegExp('Code scanned = '), '');
           final id = encryptId(int.parse(newId));
@@ -161,9 +162,6 @@ class ProfileScreen extends StatelessWidget {
               builder: (ctx) => const PakcageBottomSheet(),
             );
           }
-        },
-        toTrans: () {
-          Navigator.of(context).pushNamed('/history');
         },
       ),
     ));

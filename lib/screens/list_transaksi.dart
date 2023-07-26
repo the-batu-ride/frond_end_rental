@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/conection.dart';
-import 'package:frond_end_rental/utils/auth_uril.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../constant/colors.dart';
@@ -84,7 +83,7 @@ class _ListTransaksiState extends State<ListTransaksi> {
             },
             child: const Icon(
               Ionicons.chevron_back_outline,
-              color: purpleChat,
+              color: blackColor,
             ),
           ),
         ),
@@ -130,8 +129,8 @@ class _ListTransaksiState extends State<ListTransaksi> {
               ),
             ),
       bottomNavigationBar: bottomMenu(
+        context: context,
         onQrResolve: (dataQr) {},
-        toTrans: () {},
       ),
     );
   }

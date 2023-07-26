@@ -7,7 +7,7 @@ final _qrBarCodeScannerDialogPlugin = QrBarCodeScannerDialog();
 
 BottomNavigationBar bottomMenu({
   required Function(String?) onQrResolve,
-  required Function() toTrans,
+  required BuildContext context,
 }) {
   return BottomNavigationBar(
     onTap: (value) {
@@ -16,7 +16,13 @@ BottomNavigationBar bottomMenu({
       }
 
       if (value == 1) {
-        toTrans();
+        Navigator.of(context).pushReplacementNamed('/history');
+        return;
+      }
+
+      if (value == 0) {
+        Navigator.of(context).pushReplacementNamed('/home');
+        return;
       }
     },
     currentIndex: 1,

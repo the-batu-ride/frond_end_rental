@@ -288,6 +288,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
       bottomNavigationBar: bottomMenu(
+        context: context,
         onQrResolve: (dataQr) async {
           final newId = dataQr!.replaceFirst(RegExp('Code scanned = '), '');
           final id = encryptId(int.parse(newId));
@@ -307,9 +308,6 @@ class _HomePageState extends State<HomePage> {
               builder: (ctx) => const PakcageBottomSheet(),
             );
           }
-        },
-        toTrans: () {
-          Navigator.of(context).pushNamed('/history');
         },
       ),
     );
