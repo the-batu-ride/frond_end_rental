@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
 import 'package:frond_end_rental/utils/auth_uril.dart';
 import 'package:frond_end_rental/utils/security.dart';
+import 'package:frond_end_rental/widget/route_bottom_sheet.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:latlong2/latlong.dart';
@@ -100,7 +100,7 @@ class _MapScreenState extends State<MapScreen> {
             Navigator.of(context).pop();
           });
         }
-      });
+      }).catchError((err) {});
     });
 
     super.initState();
@@ -217,8 +217,12 @@ class _MapScreenState extends State<MapScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            // Add your desired action when the first button is pressed
-                            // For example, you can perform some action or navigate to another screen.
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return const PakcageBottomSheet();
+                              },
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:

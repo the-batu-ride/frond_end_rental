@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        '/': (context) => Login(),
+        '/': (context) => const Login(),
         '/home': (context) => const HomePage(),
         '/daftar': (context) => Daftar(),
         '/detail-transaction': (context) => const TransactionDetail(),
