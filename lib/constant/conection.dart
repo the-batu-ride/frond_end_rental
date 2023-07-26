@@ -3,6 +3,7 @@ import 'package:frond_end_rental/utils/security.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const apiConnection = "http://localhost:9000/";
+const socketServer = "http://localhost:9000";
 
 final client = Dio();
 

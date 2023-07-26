@@ -7,6 +7,7 @@ import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class TransactionVerification extends StatefulWidget {
   const TransactionVerification({super.key});
@@ -20,6 +21,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
   Map<String, dynamic>? bukti;
   bool preLoad = true;
   Map<String, dynamic>? data;
+  final clientSocket = io(socketServer);
 
   Future<dynamic> pickImageFromGalery() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -46,6 +48,18 @@ class _TransactionVerificationState extends State<TransactionVerification> {
     }
   }
 
+  void initSocket(BuildContext context) {
+    clientSocket.connect();
+
+    clientSocket.on('on_change_status_order', (data) {
+      if (data['status'] == "APPROVED" && data['code'] == data['code']) {
+        setCurrentNavigation(data['id']).then((value) {
+          Navigator.of(context).pushReplacementNamed('/map');
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     getCurrentPayment().then((value) async {
@@ -54,6 +68,14 @@ class _TransactionVerificationState extends State<TransactionVerification> {
       } else {
         try {
           final response = await getDataPackage(value);
+
+          if (response['status'] == "APPROVED") {
+            await setCurrentNavigation(response['id']);
+            if (context.mounted) {
+              Navigator.of(context).pushReplacementNamed('/map');
+            }
+          }
+
           setState(() {
             data = response;
             preLoad = false;
@@ -69,7 +91,15 @@ class _TransactionVerificationState extends State<TransactionVerification> {
       }
     });
 
+    initSocket(context);
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    clientSocket.dispose();
+    super.dispose();
   }
 
   @override
