@@ -38,7 +38,7 @@ class Daftar extends StatelessWidget {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (context.mounted) {
-        Navigator.of(context).pushReplacementNamed('/login');
+        Navigator.of(context).pushReplacementNamed('/');
       }
     }
   }

@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
         useMaterial3: true,
       ),
-      home: HomePage(),
       routes: {
-        '/login': (context) => Login(),
+        '/': (context) => Login(),
+        '/home': (context) => const HomePage(),
         '/daftar': (context) => Daftar(),
         '/detail-transaction': (context) => const TransactionDetail(),
         '/verification': (context) => const TransactionVerification(),
