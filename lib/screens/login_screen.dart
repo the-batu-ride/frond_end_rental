@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/screens/daftar.dart';
+import 'package:frond_end_rental/utils/auth_uril.dart';
 
 import '../constant/conection.dart';
 import '../models/login_model.dart';
@@ -22,16 +23,26 @@ class Login extends StatelessWidget {
         password: password.text,
       );
 
-      final storage = await getStorage();
-      final header = {'Content-type': 'application/json'};
-      final response = await dio.post(
-        url,
-        data: datalogin.toMap(),
-        options: Options(headers: header),
-      );
+      try {
+        final storage = await getStorage();
+        final header = {'Content-type': 'application/json'};
+        final response = await dio.post(
+          url,
+          data: datalogin.toMap(),
+          options: Options(headers: header),
+        );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        storage.setString('token', response.data['data']['access_token']);
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          storage.setString('token', response.data['data']['access_token']);
+          if (context.mounted) {
+            Navigator.of(context).pushReplacementNamed('/home');
+          }
+          return;
+        }
+      } on DioException catch (_) {
+        if (context.mounted) {
+          showGeneralError(context, 'Username/password salah');
+        }
       }
     }
 
@@ -62,6 +73,7 @@ class Login extends StatelessWidget {
                   child: Column(
                     children: [
                       TextField(
+                        controller: email,
                         decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Email",
@@ -77,6 +89,7 @@ class Login extends StatelessWidget {
                         height: 10,
                       ),
                       TextField(
+                        controller: password,
                         obscureText: true,
                         decoration: InputDecoration(
                           labelText: "Password",
@@ -119,7 +132,7 @@ class Login extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => Daftar(),
