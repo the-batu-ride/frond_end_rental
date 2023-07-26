@@ -90,15 +90,15 @@ class _ListTransaksiState extends State<ListTransaksi> {
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Ionicons.notifications_outline,
-              color: purpleChat,
-            ),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: const Icon(
+        //       Ionicons.notifications_outline,
+        //       color: purpleChat,
+        //     ),
+        //   ),
+        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
