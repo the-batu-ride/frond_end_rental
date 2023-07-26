@@ -54,186 +54,173 @@ class Daftar extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        color: mediumGreyColor,
+        color: lightGreyColor,
         width: size.width,
         height: size.height,
-        child: Center(
-          child: Container(
-            alignment: Alignment.center,
-            width: size.width * .8,
-            height: size.height * .8,
-            decoration: const BoxDecoration(
-                color: whiteColor,
-                borderRadius: BorderRadius.all(Radius.circular(12))),
-            child: Column(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              './assets/images/logo-remove.png',
+              width: size.width * .4,
+              height: size.height * .2,
+            ),
+            const Text(
+              "Register",
+              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: size.width * 0.9,
+              margin: EdgeInsets.all(size.width * 0.001),
+              child: Container(
+                margin: EdgeInsets.all(size.width * 0.05),
+                child: Column(children: [
+                  TextField(
+                    controller: emailText,
+                    decoration: InputDecoration(
+                      labelText: "E-Mail",
+                      hintText: "Your e-mail",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: firstName,
+                    decoration: InputDecoration(
+                      labelText: 'First Name',
+                      hintText: "First Name",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: lastname,
+                    decoration: InputDecoration(
+                      labelText: 'Last Name',
+                      hintText: "Last Name",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: alamat,
+                    decoration: InputDecoration(
+                      labelText: 'Adress',
+                      hintText: "Adress",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    obscureText: true,
+                    controller: password,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      hintText: "Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    obscureText: true,
+                    controller: confirmPassword,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      hintText: "Confirm Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ]),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: MediaQuery.of(context).size.width * .8,
+              height: MediaQuery.of(context).size.height * .059,
+              child: ElevatedButton(
+                onPressed: () {
+                  daftarClick(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: greenPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        18.0), // Adjust the value as needed
+                  ),
+                ),
+                child: const Text(
+                  "Register",
+                  style: TextStyle(
+                    color: whiteColor,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 2),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Register",
-                  style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
+                  "Sudah Punya Akun?",
+                  style: TextStyle(fontSize: 12),
                 ),
-                const SizedBox(height: 40),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Login(),
+                      ),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
                   ),
-                  width: size.width * 0.8,
-                  margin: EdgeInsets.all(size.width * 0.01),
-                  child: Container(
-                    margin: EdgeInsets.all(size.width * 0.05),
-                    child: Column(children: [
-                      TextField(
-                        controller: emailText,
-                        decoration: InputDecoration(
-                          labelText: "E-Mail",
-                          hintText: "Your e-mail",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: firstName,
-                        decoration: InputDecoration(
-                          labelText: 'First Name',
-                          hintText: "First Name",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: lastname,
-                        decoration: InputDecoration(
-                          labelText: 'Last Name',
-                          hintText: "Last Name",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: alamat,
-                        decoration: InputDecoration(
-                          labelText: 'Adress',
-                          hintText: "Adress",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        obscureText: true,
-                        controller: password,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          hintText: "Password",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        obscureText: true,
-                        controller: confirmPassword,
-                        decoration: InputDecoration(
-                          labelText: 'Confirm Password',
-                          hintText: "Confirm Password",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                    ]),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    left: size.width * 0.05,
-                    right: size.width * 0.05,
-                  ),
-                ),
-                const SizedBox(height: 50),
-                Container(
-                  width: MediaQuery.of(context).size.width * .7,
-                  height: MediaQuery.of(context).size.height * .059,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      daftarClick(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            18.0), // Adjust the value as needed
-                      ),
-                    ),
-                    child: const Text(
-                      "Register",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                const SizedBox(height: 2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Sudah Punya Akun?",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Login(),
-                          ),
-                        );
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
