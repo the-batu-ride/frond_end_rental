@@ -94,6 +94,7 @@ class _MapScreenState extends State<MapScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(err.toString()),
+                backgroundColor: const Color.fromARGB(255, 211, 65, 54),
               ),
             );
             Navigator.of(context).pop();
@@ -240,13 +241,18 @@ class _MapScreenState extends State<MapScreen> {
                           onPressed: () {
                             markAsDone(encryptId(data['id'])).then((value) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Sukses')),
+                                const SnackBar(
+                                  content: Text('Sukses'),
+                                  backgroundColor: greenPrimary,
+                                ),
                               );
                               Navigator.of(context)
                                   .pushReplacementNamed('/history');
                             }).catchError((err) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 211, 65, 54),
                                   content: Text(
                                     err.toString(),
                                   ),

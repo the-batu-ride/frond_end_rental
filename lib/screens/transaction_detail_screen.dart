@@ -54,6 +54,7 @@ class _TransactionDetailState extends State<TransactionDetail> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(e.message!),
+                backgroundColor: const Color.fromARGB(255, 211, 65, 54),
               ),
             );
             Navigator.of(context).pop();
