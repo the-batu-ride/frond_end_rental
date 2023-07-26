@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
+import 'package:frond_end_rental/utils/auth_uril.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ionicons/ionicons.dart';
@@ -48,48 +49,57 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
-    getCurrentNavigation().then((value) {
+    getToken().then((value) {
       if (value == null) {
-        Navigator.of(context).pop();
-      } else {
-        getDataPackage(value).then((response) {
-          var startL = LatLng(
-            double.parse(response['package']['lat_start']),
-            double.parse(response['package']['lngt_start']),
-          );
-          var endL = LatLng(
-            double.parse(response['package']['lat_destination']),
-            double.parse(response['package']['lngt_destination']),
-          );
+        showUnAuthorizedError(context);
+        Navigator.of(context).pushReplacementNamed('/');
+        return;
+      }
 
-          setState(() {
-            data = response;
-            startEnds = [startL, endL];
-            preLoad = false;
-          });
+      getCurrentNavigation().then((value) {
+        if (value == null) {
+          Navigator.of(context).pop();
+        } else {
+          getDataPackage(value).then((response) {
+            var startL = LatLng(
+              double.parse(response['package']['lat_start']),
+              double.parse(response['package']['lngt_start']),
+            );
+            var endL = LatLng(
+              double.parse(response['package']['lat_destination']),
+              double.parse(response['package']['lngt_destination']),
+            );
 
-          getRoute(startL, endL).then((_) async {
-            await Geolocator.requestPermission();
+            setState(() {
+              data = response;
+              startEnds = [startL, endL];
+              preLoad = false;
+            });
 
-            _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-              final position = await Geolocator.getCurrentPosition(
-                desiredAccuracy: LocationAccuracy.bestForNavigation,
-              );
+            getRoute(startL, endL).then((_) async {
+              await Geolocator.requestPermission();
 
-              setState(() {
-                currentLoc = LatLng(position.latitude, position.longitude);
+              _timer =
+                  Timer.periodic(const Duration(seconds: 5), (timer) async {
+                final position = await Geolocator.getCurrentPosition(
+                  desiredAccuracy: LocationAccuracy.bestForNavigation,
+                );
+
+                setState(() {
+                  currentLoc = LatLng(position.latitude, position.longitude);
+                });
               });
             });
+          }).catchError((err) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(err.toString()),
+              ),
+            );
+            Navigator.of(context).pop();
           });
-        }).catchError((err) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(err.toString()),
-            ),
-          );
-          Navigator.of(context).pop();
-        });
-      }
+        }
+      });
     });
 
     super.initState();

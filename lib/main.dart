@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frond_end_rental/constant/conection.dart';
 import 'package:frond_end_rental/provider/transaction_provider.dart';
 import 'package:frond_end_rental/provider/user_provider.dart';
 import 'package:frond_end_rental/screens/daftar.dart';
@@ -14,8 +13,6 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  (await getStorage()).setString('token',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJyZW5kaSByZW4iLCJpYXQiOjE2OTAyNjQ2NzEsImV4cCI6MTY5MDQzNzQ3MX0.gVmoXAve0ANsSoDA7-UhSCJimJbM_hc84IiMvSGQjgc');
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<UserProvider>(

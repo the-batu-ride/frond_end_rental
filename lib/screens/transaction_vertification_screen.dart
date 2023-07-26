@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
+import 'package:frond_end_rental/utils/auth_uril.dart';
 import 'package:frond_end_rental/utils/format_rupiah.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:ionicons/ionicons.dart';
@@ -63,36 +64,44 @@ class _TransactionVerificationState extends State<TransactionVerification> {
 
   @override
   void initState() {
-    getCurrentPayment().then((value) async {
+    getToken().then((value) {
       if (value == null) {
-        Navigator.of(context).pop();
-      } else {
-        try {
-          final response = await getDataPackage(value);
-
-          if (response['status'] == "APPROVED") {
-            await setCurrentNavigation(response['id']);
-            if (context.mounted) {
-              Navigator.of(context).pushReplacementNamed('/map');
-            }
-          }
-
-          setState(() {
-            data = response;
-            preLoad = false;
-          });
-        } on DioException catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.message!),
-            ),
-          );
-          Navigator.of(context).pop();
-        }
+        showUnAuthorizedError(context);
+        Navigator.of(context).pushReplacementNamed('/');
+        return;
       }
-    });
 
-    initSocket(context);
+      getCurrentPayment().then((value) async {
+        if (value == null) {
+          Navigator.of(context).pop();
+        } else {
+          try {
+            final response = await getDataPackage(value);
+
+            if (response['status'] == "APPROVED") {
+              await setCurrentNavigation(response['id']);
+              if (context.mounted) {
+                Navigator.of(context).pushReplacementNamed('/map');
+              }
+            }
+
+            setState(() {
+              data = response;
+              preLoad = false;
+            });
+          } on DioException catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.message!),
+              ),
+            );
+            Navigator.of(context).pop();
+          }
+        }
+      });
+
+      initSocket(context);
+    });
 
     super.initState();
   }

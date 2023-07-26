@@ -29,6 +29,14 @@ Future<void> setCurrentDetail(int id) async {
   (await getStorage()).setString('detail', encryptId(id));
 }
 
+Future<void> setCurrentBike(int id) async {
+  (await getStorage()).setString('bike', encryptId(id));
+}
+
+Future<String?> getCurrentBike() async {
+  return (await getStorage()).getString('bike');
+}
+
 Future<String?> getCurrentNavigation() async {
   return (await getStorage()).getString('navigation');
 }

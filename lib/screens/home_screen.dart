@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/conection.dart';
 import 'package:frond_end_rental/provider/transaction_provider.dart';
+import 'package:frond_end_rental/utils/auth_uril.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:frond_end_rental/widget/items.dart';
 import 'package:frond_end_rental/widget/route_bottom_sheet.dart';
@@ -21,6 +22,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool preLoad = true;
+
+  @override
+  void initState() {
+    getToken().then((value) {
+      if (value == null) {
+        showUnAuthorizedError(context);
+        Navigator.of(context).pushReplacementNamed('/');
+        return;
+      }
+
+      setState(() {
+        preLoad = false;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -75,182 +94,221 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 37, right: 37),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Positioned(
-                    child: Container(
-                      width: size.width * 1,
-                      height: size.height * 0.12,
-                      decoration: const BoxDecoration(
-                        color: primaryColor,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 18.0, left: 18.0),
-                      child: Container(
-                        width: size.width * 1,
-                        height: size.height * 0.30,
-                        decoration: const BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(11),
-                            bottomRight: Radius.circular(11),
+      body: preLoad
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: primaryColor,
+              ),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 37, right: 37),
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Positioned(
+                          child: Container(
+                            width: size.width * 1,
+                            height: size.height * 0.12,
+                            decoration: const BoxDecoration(
+                              color: primaryColor,
+                            ),
                           ),
                         ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 25),
-                              alignment: Alignment.centerLeft,
-                              width: size.width * 0.85,
-                              height: size.height * 0.11,
-                              child: const Text(
-                                "Selamat Datang (Nama)",
-                                style: TextStyle(
-                                  color: blackColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15,
+                        Positioned(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(right: 18.0, left: 18.0),
+                            child: Container(
+                              width: size.width * 1,
+                              height: size.height * 0.30,
+                              decoration: const BoxDecoration(
+                                color: whiteColor,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(11),
+                                  bottomRight: Radius.circular(11),
                                 ),
                               ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 25, right: 25),
-                              child: Divider(
-                                color: lightGreyColor,
-                                height: 4,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10, left: 20, right: 20 ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              child: Column(
                                 children: [
-                                  renderItemDashboard(
-                                    size: size,
-                                    title: 'Jadwal Event',
-                                    color: pinkEvent,
-                                    icons: Ionicons.calendar_outline,
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 25),
+                                    alignment: Alignment.centerLeft,
+                                    width: size.width * 0.85,
+                                    height: size.height * 0.11,
+                                    child: const Text(
+                                      "Selamat Datang (Nama)",
+                                      style: TextStyle(
+                                        color: blackColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                      ),
+                                    ),
                                   ),
-                                  renderItemDashboard(
-                                    size: size,
-                                    title: 'Chat CS',
-                                    color: purpleChat,
-                                    icons: Ionicons.chatbox_ellipses_outline,
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 25, right: 25),
+                                    child: Divider(
+                                      color: lightGreyColor,
+                                      height: 4,
+                                    ),
                                   ),
-                                  Builder(builder: (context) {
-                                    return renderItemDashboard(
-                                      size: size,
-                                      title: 'Package Route',
-                                      color: yellowBicycle,
-                                      icons: Ionicons.bicycle_outline,
-                                      handleClick: () {
-                                        showModalBottomSheet(
-                                          context: context,
-                                          builder: (ctx) {
-                                            return const PakcageBottomSheet();
-                                          },
-                                        );
-                                      },
-                                    );
-                                  }),
-                                  renderItemDashboard(
-                                    size: size,
-                                    title: 'Saldo',
-                                    color: greenSaldo,
-                                    icons: Ionicons.file_tray_outline,
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10, left: 20, right: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        renderItemDashboard(
+                                          size: size,
+                                          title: 'Jadwal Event',
+                                          color: pinkEvent,
+                                          icons: Ionicons.calendar_outline,
+                                        ),
+                                        renderItemDashboard(
+                                          size: size,
+                                          title: 'Chat CS',
+                                          color: purpleChat,
+                                          icons:
+                                              Ionicons.chatbox_ellipses_outline,
+                                        ),
+                                        Builder(builder: (context) {
+                                          return renderItemDashboard(
+                                            size: size,
+                                            title: 'Package Route',
+                                            color: yellowBicycle,
+                                            icons: Ionicons.bicycle_outline,
+                                            handleClick: () async {
+                                              final bike = context
+                                                  .read<TransactionProvider>()
+                                                  .bike;
+                                              final bikeStore =
+                                                  await getCurrentBike();
+
+                                              if (bike == null ||
+                                                  bikeStore == null) {
+                                                if (context.mounted) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        'Scan speda terlebih dahulu',
+                                                      ),
+                                                      backgroundColor:
+                                                          Color.fromARGB(
+                                                              255, 211, 65, 54),
+                                                    ),
+                                                  );
+                                                }
+                                                return;
+                                              }
+
+                                              if (context.mounted) {
+                                                showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (ctx) {
+                                                    return const PakcageBottomSheet();
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          );
+                                        }),
+                                        renderItemDashboard(
+                                          size: size,
+                                          title: 'Saldo',
+                                          color: greenSaldo,
+                                          icons: Ionicons.file_tray_outline,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        top: 30.0,
+                        right: 20,
+                        left: 20,
+                        bottom: 10,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Berita Terbaru",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800, fontSize: 15),
+                          ),
+                          Text(
+                            "View All",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              color: mediumGreyColor,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const Padding(
-                padding: EdgeInsets.only(
-                  top: 30.0,
-                  right: 20,
-                  left: 20,
-                  bottom: 10,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Berita Terbaru",
-                      style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
-                    ),
-                    Text(
-                      "View All",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                        color: mediumGreyColor,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          cardView(
+                            image: './assets/images/4.jpg',
+                            title: 'Event Bromo KOM Challenge 2023',
+                          ),
+                          cardView(
+                            image: './assets/images/4.jpg',
+                            title: 'Banyuwangi Blue Fire Ijen Challenge 2023',
+                          ),
+                          cardView(
+                            image: './assets/images/4.jpg',
+                            title: 'Kediri Dholo KOM Challenge 2023',
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    cardView(
-                      image: './assets/images/4.jpg',
-                      title: 'Event Bromo KOM Challenge 2023',
-                    ),
-                    cardView(
-                      image: './assets/images/4.jpg',
-                      title: 'Banyuwangi Blue Fire Ijen Challenge 2023',
-                    ),
-                    cardView(
-                      image: './assets/images/4.jpg',
-                      title: 'Kediri Dholo KOM Challenge 2023',
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: size.width * 0.9,
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.only(top: 20),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(2)),
-                  color: whiteColor,
-                ),
-                child: const Column(
-                  children: [
-                    Text(
-                      "Copyright © Finapp 2021. All Rights Reserved.",
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
-                    ),
-                    Text(
-                      "Bootstrap 5 based mobile template.",
-                      style: TextStyle(fontSize: 12),
+                    Container(
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.only(top: 20),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(2)),
+                        color: whiteColor,
+                      ),
+                      child: const Column(
+                        children: [
+                          Text(
+                            "Copyright © Finapp 2021. All Rights Reserved.",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 12),
+                          ),
+                          Text(
+                            "Bootstrap 5 based mobile template.",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
       bottomNavigationBar: bottomMenu(
         onQrResolve: (dataQr) async {
           final newId = dataQr!.replaceFirst(RegExp('Code scanned = '), '');
           final id = encryptId(int.parse(newId));
-
+          setCurrentBike(int.parse(newId));
           final token = await getToken();
           final response = await client.get(
             '${apiConnection}api/v1/bike/$id',

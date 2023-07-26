@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/conection.dart';
+import 'package:frond_end_rental/utils/auth_uril.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../constant/colors.dart';
@@ -33,7 +34,14 @@ class _ListTransaksiState extends State<ListTransaksi> {
   @override
   void initState() {
     super.initState();
-    getHistoryTransaction();
+    getToken().then((value) {
+      if (value == null) {
+        showUnAuthorizedError(context);
+        Navigator.of(context).pushReplacementNamed('/');
+        return;
+      }
+      getHistoryTransaction();
+    });
   }
 
   List<Widget> renderCards(Size size) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
+import 'package:frond_end_rental/utils/auth_uril.dart';
 import 'package:frond_end_rental/utils/format_rupiah.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:frond_end_rental/widget/appbar_custom.dart';
@@ -32,25 +33,33 @@ class _TransactionDetailState extends State<TransactionDetail> {
 
   @override
   void initState() {
-    getCurrentDetail().then((value) async {
+    getToken().then((value) {
       if (value == null) {
-        Navigator.of(context).pop();
-      } else {
-        try {
-          final response = await getDataPackage(value);
-          setState(() {
-            data = response;
-            preLoad = false;
-          });
-        } on DioException catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.message!),
-            ),
-          );
-          Navigator.of(context).pop();
-        }
+        showUnAuthorizedError(context);
+        Navigator.of(context).pushReplacementNamed('/');
+        return;
       }
+
+      getCurrentDetail().then((value) async {
+        if (value == null) {
+          Navigator.of(context).pop();
+        } else {
+          try {
+            final response = await getDataPackage(value);
+            setState(() {
+              data = response;
+              preLoad = false;
+            });
+          } on DioException catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.message!),
+              ),
+            );
+            Navigator.of(context).pop();
+          }
+        }
+      });
     });
 
     super.initState();
