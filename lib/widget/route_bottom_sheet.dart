@@ -205,26 +205,27 @@ class _PakcageBottomSheetState extends State<PakcageBottomSheet> {
                                     'bike': provide.bike,
                                     'packages': provide.package
                                   };
-                                  final token = await getToken();
-                                  final response = await client.post(
+                                  getToken().then((token) {
+                                    client.post(
                                       '${apiConnection}api/v1/transaction',
                                       data: data,
                                       options: Options(headers: {
                                         'Authorization': 'Bearer $token'
-                                      }));
-
-                                  if (response.statusCode == 201) {
-                                    if (context.mounted) {
-                                      setCurrentNavigation(
-                                        response.data['data']['id'],
-                                      ).then((_) {
-                                        Navigator.of(context)
-                                            .pushReplacementNamed(
-                                          '/verification',
-                                        );
-                                      });
-                                    }
-                                  }
+                                      }),
+                                    )
+                                        .then((response) {
+                                      if (response.statusCode == 201) {
+                                        setCurrentNavigation(
+                                          response.data['data']['id'],
+                                        ).then((_) {
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                            '/verification',
+                                          );
+                                        });
+                                      }
+                                    });
+                                  });
                                 } on DioException catch (e) {
                                   debugPrint(e.message);
                                 }

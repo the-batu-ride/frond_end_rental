@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/conection.dart';
 import 'package:frond_end_rental/models/register_model.dart';
+import 'package:frond_end_rental/screens/login_screen.dart';
+import 'package:frond_end_rental/utils/auth_uril.dart';
 import '../constant/colors.dart';
 
 class Daftar extends StatelessWidget {
@@ -29,17 +31,21 @@ class Daftar extends StatelessWidget {
       password: password.text,
     );
 
-    var header = {'Content-type': 'application/json'};
-    var response = await dio.post(
-      url,
-      data: data.toMap(),
-      options: Options(headers: header),
-    );
+    try {
+      var header = {'Content-type': 'application/json'};
+      var response = await dio.post(
+        url,
+        data: data.toMap(),
+        options: Options(headers: header),
+      );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      if (context.mounted) {
-        Navigator.of(context).pushReplacementNamed('/');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        if (context.mounted) {
+          Navigator.of(context).pushReplacementNamed('/');
+        }
       }
+    } on DioException catch (_) {
+      showGeneralError(context, 'Terjadi kesalahan saat mendaftar');
     }
   }
 
@@ -180,19 +186,51 @@ class Daftar extends StatelessWidget {
                     onPressed: () {
                       daftarClick(context);
                     },
-                    child: Text(
-                      "Register",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                             18.0), // Adjust the value as needed
                       ),
                     ),
+                    child: const Text(
+                      "Register",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
+                const SizedBox(height: 2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Sudah Punya Akun?",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Login(),
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

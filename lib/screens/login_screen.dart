@@ -7,11 +7,34 @@ import 'package:frond_end_rental/utils/auth_uril.dart';
 import '../constant/conection.dart';
 import '../models/login_model.dart';
 
-class Login extends StatelessWidget {
-  Login({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   final email = TextEditingController();
   final password = TextEditingController();
+
+  @override
+  void initState() {
+    getToken().then((value) {
+      if (value != null) {
+        Navigator.of(context).pushReplacementNamed('/home');
+        return;
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

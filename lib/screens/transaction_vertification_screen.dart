@@ -22,6 +22,7 @@ class TransactionVerification extends StatefulWidget {
 class _TransactionVerificationState extends State<TransactionVerification> {
   Map<String, dynamic>? bukti;
   bool preLoad = true;
+  bool isPaid = false;
   Map<String, dynamic>? data;
   final clientSocket = io(socketServer);
 
@@ -41,10 +42,12 @@ class _TransactionVerificationState extends State<TransactionVerification> {
   }
 
   ImageProvider getImage() {
+    if (isPaid) {
+      return const AssetImage('assets/images/sukses.png');
+    }
+
     if (bukti == null) {
-      return const NetworkImage(
-        'http://www.listercarterhomes.com/wp-content/uploads/2013/11/dummy-image-square.jpg',
-      );
+      return const AssetImage('assets/images/white.png');
     } else {
       return MemoryImage(bukti?['binary']);
     }
@@ -87,6 +90,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
 
             setState(() {
               data = response;
+              isPaid = response['payment']['payment_bill'] != null;
               preLoad = false;
             });
           } on DioException catch (e) {
@@ -161,19 +165,21 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      try {
-                        final path = await pickImageFromGalery();
-                        setState(() {
-                          bukti = path;
-                        });
-                      } on Exception catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 202, 70, 60),
-                            content: Text(e.toString()),
-                          ),
-                        );
+                      if (!isPaid) {
+                        try {
+                          final path = await pickImageFromGalery();
+                          setState(() {
+                            bukti = path;
+                          });
+                        } on Exception catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 202, 70, 60),
+                              content: Text(e.toString()),
+                            ),
+                          );
+                        }
                       }
                     },
                     child: Container(
@@ -195,10 +201,10 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                             decoration: BoxDecoration(
                               image: DecorationImage(image: getImage()),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
-                                "Upload Pembayaran",
-                                style: TextStyle(color: mediumGreyColor),
+                                isPaid ? "" : "Upload Pembayaran",
+                                style: const TextStyle(color: mediumGreyColor),
                               ),
                             ),
                           ),
@@ -214,21 +220,25 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                     decoration: const BoxDecoration(
                         color: purpleChat,
                         borderRadius: BorderRadius.all(Radius.circular(12))),
-                    child: const Column(
+                    child: Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Transfer ke Bank BARI",
-                              style: TextStyle(fontSize: 10, color: whiteColor),
+                              isPaid
+                                  ? "Status Pembayaran"
+                                  : "Transfer ke Bank BARI",
+                              style: const TextStyle(
+                                  fontSize: 10, color: whiteColor),
                             ),
                             Text(
-                              "2212143121312",
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: whiteColor,
-                                  fontWeight: FontWeight.w500),
+                              isPaid ? data!['status'] : "2212143121312",
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: whiteColor,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),
@@ -286,52 +296,60 @@ class _TransactionVerificationState extends State<TransactionVerification> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        margin: EdgeInsets.all(size.width * 0.02),
-                        child: SizedBox(
-                          width: size.width * 0.65,
-                          height: size.height * 0.07,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (bukti == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 202, 70, 60),
-                                    content: Text('Upload terlebih dahulu'),
-                                  ),
-                                );
-                              } else {
-                                uploadTransferBill(
-                                  bukti!,
-                                  encryptId(data?['id']),
-                                ).then((value) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      backgroundColor: greenPrimary,
-                                      content: Text(
-                                        'Success silah tunggu beberapa saat',
-                                      ),
+                      !isPaid
+                          ? Container(
+                              margin: EdgeInsets.all(size.width * 0.02),
+                              child: SizedBox(
+                                width: size.width * 0.65,
+                                height: size.height * 0.07,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (bukti == null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          backgroundColor:
+                                              Color.fromARGB(255, 202, 70, 60),
+                                          content:
+                                              Text('Upload terlebih dahulu'),
+                                        ),
+                                      );
+                                    } else {
+                                      uploadTransferBill(
+                                        bukti!,
+                                        encryptId(data?['id']),
+                                      ).then((value) {
+                                        setState(() {
+                                          isPaid = true;
+                                        });
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: greenPrimary,
+                                            content: Text(
+                                              'Success silah tunggu beberapa saat',
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          18.0), // Adjust the value as needed
                                     ),
-                                  );
-                                });
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    18.0), // Adjust the value as needed
+                                  ),
+                                  child: const Text(
+                                    "Confirm",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            child: const Text(
-                              "Confirm",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                            )
+                          : const SizedBox()
                     ],
                   )
                 ],
