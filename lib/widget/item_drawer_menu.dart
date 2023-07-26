@@ -8,6 +8,7 @@ Widget ItemDrawerMenu({
   required String title,
   required IconData icons,
 }) {
+
   return GestureDetector(
     onTap: () {},
     child: Row(
@@ -15,7 +16,7 @@ Widget ItemDrawerMenu({
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: size.width * .50,
+          width: 225,
           child: Row(
             children: [
               Align(

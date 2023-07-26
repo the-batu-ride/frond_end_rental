@@ -13,7 +13,7 @@ Widget renderItemDashboard({
     child: Container(
       alignment: Alignment.center,
       width: size.width * 0.150,
-      height: size.height * 0.10,
+      height: size.height * 0.15,
       // decoration: BoxDecoration(color: Colors.amber),
       child: Column(
         children: [

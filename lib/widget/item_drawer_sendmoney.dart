@@ -7,6 +7,7 @@ Widget ItemDrawerSendMoney({
   required Size size,
   required String title,
 }) {
+
   return GestureDetector(
     onTap: () {},
     child: Row(
@@ -14,7 +15,7 @@ Widget ItemDrawerSendMoney({
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: size.width * .55,
+          width: 225,
           child: Row(
             children: [
               ClipRRect(
