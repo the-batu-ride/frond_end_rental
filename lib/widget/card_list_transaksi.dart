@@ -19,21 +19,21 @@ Widget cardListTransaksi(
 
         if (status == "APPROVED") {
           setCurrentNavigation(id).then((_) {
-            Navigator.of(context).pushNamed('/map');
+            Navigator.of(context).pushReplacementNamed('/map');
           });
           return;
         }
 
-        if (status == "COMPLETED") {
+        if (status == "COMPLETED" || status == "REJECTED") {
           setCurrentDetail(id).then((_) {
-            Navigator.of(context).pushNamed('/detail-transaction');
+            Navigator.of(context).pushReplacementNamed('/detail-transaction');
           });
           return;
         }
 
         if (status == "PENDING") {
           setCurrentPayment(id).then((_) {
-            Navigator.of(context).pushNamed('/verification');
+            Navigator.of(context).pushReplacementNamed('/verification');
           });
           return;
         }

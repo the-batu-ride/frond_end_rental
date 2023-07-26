@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool preLoad = true;
+  bool preLoad = false;
 
   @override
   void initState() {
@@ -30,12 +30,11 @@ class _HomePageState extends State<HomePage> {
       if (value == null) {
         showUnAuthorizedError(context);
         Navigator.of(context).pushReplacementNamed('/');
-        return;
+      } else {
+        setState(() {
+          preLoad = false;
+        });
       }
-
-      setState(() {
-        preLoad = false;
-      });
     });
     super.initState();
   }
@@ -74,13 +73,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: const Icon(
-          //     Ionicons.notifications_outline,
-          //     color: blackColor,
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.only(
                 left: 8.0, top: 8.0, bottom: 8.0, right: 20.0),
@@ -191,17 +183,8 @@ class _HomePageState extends State<HomePage> {
                                               if (bike == null ||
                                                   bikeStore == null) {
                                                 if (context.mounted) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                        'Scan speda terlebih dahulu',
-                                                      ),
-                                                      backgroundColor:
-                                                          Color.fromARGB(
-                                                              255, 211, 65, 54),
-                                                    ),
-                                                  );
+                                                  showGeneralError(context,
+                                                      'Scan speda terlebih dahulu');
                                                 }
                                                 return;
                                               }
@@ -308,7 +291,6 @@ class _HomePageState extends State<HomePage> {
         onQrResolve: (dataQr) async {
           final newId = dataQr!.replaceFirst(RegExp('Code scanned = '), '');
           final id = encryptId(int.parse(newId));
-          setCurrentBike(int.parse(newId));
           final token = await getToken();
           final response = await client.get(
             '${apiConnection}api/v1/bike/$id',

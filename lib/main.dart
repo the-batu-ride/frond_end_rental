@@ -12,8 +12,7 @@ import 'package:frond_end_rental/screens/transaction_vertification_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<UserProvider>(
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
         '/verification': (context) => const TransactionVerification(),
         '/map': (context) => const MapScreen(),
         '/history': (context) => const ListTransaksi(),
-        '/profile':(context) => ProfileScreen()
+        '/profile': (context) => const ProfileScreen()
       },
     );
   }

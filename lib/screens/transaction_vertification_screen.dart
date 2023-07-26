@@ -57,6 +57,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
     clientSocket.connect();
 
     clientSocket.on('on_change_status_order', (data) {
+      print(data);
       if (data['status'] == "APPROVED" && data['code'] == data['code']) {
         setCurrentNavigation(this.data?['id']).then((value) {
           Navigator.of(context).pushReplacementNamed('/map');
@@ -67,8 +68,8 @@ class _TransactionVerificationState extends State<TransactionVerification> {
 
   @override
   void initState() {
-    getToken().then((value) {
-      if (value == null) {
+    getToken().then((token) {
+      if (token == null) {
         showUnAuthorizedError(context);
         Navigator.of(context).pushReplacementNamed('/');
         return;
@@ -76,7 +77,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
 
       getCurrentPayment().then((value) async {
         if (value == null) {
-          Navigator.of(context).pop();
+          Navigator.of(context).pushNamed('/history');
         } else {
           try {
             final response = await getDataPackage(value);
@@ -127,7 +128,7 @@ class _TransactionVerificationState extends State<TransactionVerification> {
         leading: Builder(
           builder: (cont) => GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed('/history');
             },
             child: const Icon(
               Ionicons.chevron_back_outline,

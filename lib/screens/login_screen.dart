@@ -19,17 +19,6 @@ class _LoginState extends State<Login> {
   final password = TextEditingController();
 
   @override
-  void initState() {
-    getToken().then((value) {
-      if (value != null) {
-        Navigator.of(context).pushReplacementNamed('/home');
-        return;
-      }
-    });
-    super.initState();
-  }
-
-  @override
   void dispose() {
     email.dispose();
     password.dispose();

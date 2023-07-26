@@ -197,33 +197,39 @@ class _PakcageBottomSheetState extends State<PakcageBottomSheet> {
                             ),
                             child: ButtonSolid(
                               handler: () async {
+                                Navigator.of(context).pushReplacementNamed(
+                                  '/verification',
+                                );
                                 final provide =
                                     context.read<TransactionProvider>();
+                                const url =
+                                    '${apiConnection}api/v1/transaction';
                                 final data = {
                                   'payment_method': provide.paymentMethod,
                                   'bike': provide.bike,
                                   'packages': provide.package
                                 };
+
                                 getToken().then((token) {
                                   client
                                       .post(
-                                    '${apiConnection}api/v1/transaction',
+                                    url,
                                     data: data,
-                                    options: Options(headers: {
-                                      'Authorization': 'Bearer $token'
-                                    }),
+                                    options: Options(
+                                      headers: {
+                                        'Authorization': 'Bearer $token'
+                                      },
+                                    ),
                                   )
                                       .then((response) {
-                                    if (response.statusCode == 201) {
-                                      setCurrentNavigation(
-                                        response.data['data']['id'],
-                                      ).then((_) {
-                                        Navigator.of(context)
-                                            .pushReplacementNamed(
-                                          '/verification',
-                                        );
-                                      });
-                                    }
+                                    setCurrentPayment(
+                                            response.data?['data']['id'])
+                                        .then((_) {
+                                      Navigator.of(context)
+                                          .pushReplacementNamed(
+                                        '/verification',
+                                      );
+                                    });
                                   });
                                 });
                               },

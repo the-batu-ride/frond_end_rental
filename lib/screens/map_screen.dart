@@ -61,7 +61,7 @@ class _MapScreenState extends State<MapScreen> {
 
     getCurrentNavigation().then((value) {
       if (value == null) {
-        Navigator.of(context).pop();
+        Navigator.of(context).pushNamed('/history');
       } else {
         getDataPackage(value).then((response) {
           var startL = LatLng(
@@ -114,10 +114,17 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Rute "),
+        title: const Text("Rute"),
       ),
       body: preLoad
           ? const Center(

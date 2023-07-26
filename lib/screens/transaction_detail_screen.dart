@@ -67,6 +67,13 @@ class _TransactionDetailState extends State<TransactionDetail> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     SizedBox marginItem() {
@@ -76,7 +83,12 @@ class _TransactionDetailState extends State<TransactionDetail> {
     }
 
     return Scaffold(
-      appBar: AppBarCustom("Transaction Detail", Icons.delete, context),
+      appBar: AppBarCustom(
+        "Transaction Detail",
+        Icons.delete,
+        context,
+        path: '/history',
+      ),
       body: preLoad
           ? const Center(
               child: CircularProgressIndicator(

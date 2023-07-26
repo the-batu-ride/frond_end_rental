@@ -17,31 +17,39 @@ class ListTransaksi extends StatefulWidget {
 
 class _ListTransaksiState extends State<ListTransaksi> {
   List<dynamic> list = [];
-
-  void getHistoryTransaction() async {
-    final token = await getToken();
-    final response = await client.get<Map<String, dynamic>>(
-      '${apiConnection}api/v1/transaction',
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
-
-    final data = response.data!['data'] as List<dynamic>;
-    setState(() {
-      list = data;
-    });
-  }
+  bool preLoad = true;
 
   @override
   void initState() {
+    getHistoryTransaction();
     super.initState();
-    getToken().then((value) {
-      if (value == null) {
-        showUnAuthorizedError(context);
-        Navigator.of(context).pushReplacementNamed('/');
-        return;
-      }
-      getHistoryTransaction();
-    });
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  void getHistoryTransaction() async {
+    try {
+      final token = await getToken();
+      final response = await client.get<Map<String, dynamic>>(
+        '${apiConnection}api/v1/transaction',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      final data = response.data!['data'] as List<dynamic>;
+      setState(() {
+        list = data;
+        preLoad = false;
+      });
+    } on DioException catch (_) {
+      setState(() {
+        preLoad = false;
+      });
+    }
   }
 
   List<Widget> renderCards(Size size) {
@@ -72,7 +80,7 @@ class _ListTransaksiState extends State<ListTransaksi> {
         leading: Builder(
           builder: (cont) => GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed('/home');
             },
             child: const Icon(
               Ionicons.chevron_back_outline,
@@ -90,41 +98,37 @@ class _ListTransaksiState extends State<ListTransaksi> {
             ),
           ),
         ),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {},
-        //     icon: const Icon(
-        //       Ionicons.notifications_outline,
-        //       color: purpleChat,
-        //     ),
-        //   ),
-        // ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SizedBox(
-            width: size.width * .9,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 7,
+      body: preLoad
+          ? const Center(
+              child: CircularProgressIndicator(
+              color: primaryColor,
+            ))
+          : Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: SizedBox(
+                  width: size.width * .9,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      const Text(
+                        "Today",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      ...renderCards(size),
+                    ],
+                  ),
                 ),
-                const Text(
-                  "Today",
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(
-                  height: 7,
-                ),
-                ...renderCards(size),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
       bottomNavigationBar: bottomMenu(
         onQrResolve: (dataQr) {},
         toTrans: () {},

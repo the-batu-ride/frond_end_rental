@@ -10,6 +10,8 @@ import 'package:frond_end_rental/widget/route_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
 //dummy data
@@ -29,7 +31,12 @@ class ProfileScreen extends StatelessWidget {
     Future<void> saveClick() async {}
 
     return (Scaffold(
-      appBar: AppBarCustom('Profile', Icons.notifications, context),
+      appBar: AppBarCustom(
+        'Profile',
+        Icons.notifications,
+        context,
+        path: '/home',
+      ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(20),
