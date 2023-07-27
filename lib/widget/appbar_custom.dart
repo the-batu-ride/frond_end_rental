@@ -11,7 +11,12 @@ class AppBarCustom extends AppBar {
           title: Text(data),
           centerTitle: true,
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(icon)),
+            icon == null
+                ? const SizedBox()
+                : IconButton(
+                    onPressed: () {},
+                    icon: Icon(icon),
+                  ),
           ],
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,

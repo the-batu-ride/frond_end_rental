@@ -2,10 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// const apiConnection = "https://rental-393914.an.r.appspot.com/";
-// const socketServer = "https://rental-393914.an.r.appspot.com";
-const apiConnection = "http://localhost:9000/";
-const socketServer = "http://localhost:9000";
+const apiConnection = "https://rental-393914.an.r.appspot.com/";
+const socketServer = "https://rental-393914.an.r.appspot.com";
 
 final client = Dio();
 

@@ -24,6 +24,11 @@ BottomNavigationBar bottomMenu({
         Navigator.of(context).pushReplacementNamed('/home');
         return;
       }
+
+      if (value == 3) {
+        Navigator.of(context).pushReplacementNamed('/profile');
+        return;
+      }
     },
     currentIndex: 1,
     backgroundColor: whiteColor,
@@ -41,10 +46,6 @@ BottomNavigationBar bottomMenu({
       BottomNavigationBarItem(
         icon: Icon(Ionicons.qr_code_outline),
         label: 'Scan QR',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Ionicons.notifications_outline),
-        label: 'Notifikasi',
       ),
       BottomNavigationBarItem(
         icon: Icon(Ionicons.settings_outline),

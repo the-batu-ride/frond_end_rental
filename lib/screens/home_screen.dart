@@ -23,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool preLoad = false;
+  dynamic data;
 
   @override
   void initState() {
@@ -31,8 +32,14 @@ class _HomePageState extends State<HomePage> {
         showUnAuthorizedError(context);
         Navigator.of(context).pushReplacementNamed('/');
       } else {
-        setState(() {
-          preLoad = false;
+        client
+            .get('${apiConnection}api/v1/auth/user',
+                options: Options(headers: {'Authorization': 'Bearer $value'}))
+            .then((res) {
+          setState(() {
+            preLoad = false;
+            data = res.data['data'];
+          });
         });
       }
     });
@@ -130,9 +137,9 @@ class _HomePageState extends State<HomePage> {
                                     alignment: Alignment.centerLeft,
                                     width: size.width * 0.85,
                                     height: size.height * 0.11,
-                                    child: const Text(
-                                      "Selamat Datang (Nama)",
-                                      style: TextStyle(
+                                    child: Text(
+                                      "Selamat Datang ${data?['full_name'] ?? ""}",
+                                      style: const TextStyle(
                                         color: blackColor,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 15,
