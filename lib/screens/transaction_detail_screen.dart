@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/utils/auth_uril.dart';
-import 'package:frond_end_rental/utils/format_rupiah.dart';
+import 'package:frond_end_rental/utils/format.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:frond_end_rental/widget/appbar_custom.dart';
 import 'package:frond_end_rental/widget/bottom_menu.dart';
@@ -11,14 +11,6 @@ import 'package:frond_end_rental/provider/transaction_provider.dart';
 import 'package:frond_end_rental/widget/route_bottom_sheet.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
-
-var status = true;
-var name = "khamal akbar";
-var bankname = "Envanto Bank";
-var transactionkategori = "Shopping";
-var receipt = "true";
-var date = "sep 25, 2020 10:45 AM";
-var amount = "\$24";
 
 class TransactionDetail extends StatefulWidget {
   const TransactionDetail({super.key});
@@ -225,7 +217,11 @@ class _TransactionDetailState extends State<TransactionDetail> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
-                              Text(date)
+                              Text(
+                                formatDate(
+                                  DateTime.parse(data['updated_at']),
+                                ),
+                              )
                             ],
                           ),
                           renderDevider(Colors.grey),

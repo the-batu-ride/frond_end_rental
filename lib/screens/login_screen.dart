@@ -28,8 +28,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     Future<void> loginClick() async {
-      Dio dio = Dio();
-      var url = "${apiConnection}api/v1/auth/signin";
+      const url = "${apiConnection}api/v1/auth/signin";
       LoginModel datalogin = LoginModel(
         email: email.text,
         password: password.text,
@@ -38,7 +37,7 @@ class _LoginState extends State<Login> {
       try {
         final storage = await getStorage();
         final header = {'Content-type': 'application/json'};
-        final response = await dio.post(
+        final response = await client.post(
           url,
           data: datalogin.toMap(),
           options: Options(headers: header),

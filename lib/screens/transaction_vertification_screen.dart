@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
 import 'package:frond_end_rental/utils/auth_uril.dart';
-import 'package:frond_end_rental/utils/format_rupiah.dart';
+import 'package:frond_end_rental/utils/format.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:socket_io_client/socket_io_client.dart';

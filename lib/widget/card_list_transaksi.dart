@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frond_end_rental/constant/colors.dart';
 import 'package:frond_end_rental/constant/conection.dart';
-import 'package:frond_end_rental/utils/format_rupiah.dart';
+import 'package:frond_end_rental/utils/format.dart';
 
 Widget cardListTransaksi(
   BuildContext context, {

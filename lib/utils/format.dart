@@ -5,3 +5,8 @@ String formatRupiah(dynamic amount) {
   final formatCurrency = NumberFormat.currency(locale: 'id', symbol: 'Rp');
   return formatCurrency.format(amount);
 }
+
+String formatDate(DateTime date) {
+  final formatter = DateFormat('dd MMM yyyy');
+  return formatter.format(date);
+}
