@@ -6,8 +6,15 @@ import 'package:frond_end_rental/screens/login_screen.dart';
 import 'package:frond_end_rental/utils/auth_uril.dart';
 import '../constant/colors.dart';
 
-class Daftar extends StatelessWidget {
-  Daftar({super.key});
+class Daftar extends StatefulWidget {
+  const Daftar({super.key});
+
+  @override
+  State<Daftar> createState() => _DaftarState();
+}
+
+class _DaftarState extends State<Daftar> {
+  bool loading = false;
 
   final emailText = TextEditingController();
   final firstName = TextEditingController();
@@ -16,8 +23,45 @@ class Daftar extends StatelessWidget {
   final password = TextEditingController();
   final confirmPassword = TextEditingController();
 
-  Future<void> daftarClick(BuildContext context) async {
+  @override
+  void dispose() {
+    emailText.dispose();
+    firstName.dispose();
+    lastname.dispose();
+    alamat.dispose();
+    password.dispose();
+    confirmPassword.dispose();
+    super.dispose();
+  }
+
+  bool validate(BuildContext context) {
+    if (emailText.text.isEmpty ||
+        firstName.text.isEmpty ||
+        lastname.text.isEmpty ||
+        alamat.text.isEmpty ||
+        password.text.isEmpty ||
+        confirmPassword.text.isEmpty) {
+      showGeneralError(context, 'Semua input wajib diisi!');
+      return false;
+    }
+
+    if (password.text.length < 8) {
+      showGeneralError(context, 'Panjang password minimal 8 karakter!');
+      return false;
+    }
+
     if (password.text != confirmPassword.text) {
+      showGeneralError(context, 'Password dan konfirmasi password belum sama!');
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> daftarClick(BuildContext context) async {
+    setState(() => loading = true);
+    if (!validate(context)) {
+      setState(() => loading = false);
       return;
     }
 
@@ -46,6 +90,8 @@ class Daftar extends StatelessWidget {
       }
     } on DioException catch (_) {
       showGeneralError(context, 'Terjadi kesalahan saat mendaftar');
+    } finally {
+      setState(() => loading = false);
     }
   }
 
@@ -54,10 +100,8 @@ class Daftar extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          color: lightGreyColor,
+        child: SizedBox(
           width: size.width,
-          height: size.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -70,7 +114,7 @@ class Daftar extends StatelessWidget {
                 "Register",
                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 25),
               Container(
                 width: size.width * 0.9,
                 margin: EdgeInsets.all(size.width * 0.001),
@@ -90,7 +134,7 @@ class Daftar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 25),
                     TextField(
                       controller: firstName,
                       decoration: InputDecoration(
@@ -104,7 +148,7 @@ class Daftar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 25),
                     TextField(
                       controller: lastname,
                       decoration: InputDecoration(
@@ -118,7 +162,7 @@ class Daftar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 25),
                     TextField(
                       controller: alamat,
                       decoration: InputDecoration(
@@ -132,7 +176,7 @@ class Daftar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 25),
                     TextField(
                       obscureText: true,
                       controller: password,
@@ -147,7 +191,7 @@ class Daftar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 25),
                     TextField(
                       obscureText: true,
                       controller: confirmPassword,
@@ -162,12 +206,11 @@ class Daftar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
                   ]),
                 ),
               ),
-              const SizedBox(height: 10),
-              Container(
+              const SizedBox(height: 20),
+              SizedBox(
                 width: MediaQuery.of(context).size.width * .8,
                 height: MediaQuery.of(context).size.height * .059,
                 child: ElevatedButton(
@@ -181,14 +224,23 @@ class Daftar extends StatelessWidget {
                           18.0), // Adjust the value as needed
                     ),
                   ),
-                  child: const Text(
-                    "Register",
-                    style: TextStyle(
-                      color: whiteColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: loading
+                      ? const SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          "Register",
+                          style: TextStyle(
+                            color: whiteColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 2),

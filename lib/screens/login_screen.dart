@@ -15,6 +15,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool loading = false;
   final email = TextEditingController();
   final password = TextEditingController();
 
@@ -25,38 +26,53 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Future<void> loginClick() async {
-      const url = "${apiConnection}api/v1/auth/signin";
-      LoginModel datalogin = LoginModel(
-        email: email.text,
-        password: password.text,
-      );
+  Future<void> loginClick(BuildContext context) async {
+    setState(() => loading = true);
+    const url = "${apiConnection}api/v1/auth/signin";
+    LoginModel datalogin = LoginModel(
+      email: email.text,
+      password: password.text,
+    );
 
-      try {
-        final storage = await getStorage();
-        final header = {'Content-type': 'application/json'};
-        final response = await client.post(
-          url,
-          data: datalogin.toMap(),
-          options: Options(headers: header),
-        );
-
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          storage.setString('token', response.data['data']['access_token']);
-          if (context.mounted) {
-            Navigator.of(context).pushReplacementNamed('/home');
-          }
-          return;
-        }
-      } on DioException catch (_) {
-        if (context.mounted) {
-          showGeneralError(context, 'Username/password salah');
-        }
-      }
+    if (email.text.isEmpty || password.text.isEmpty) {
+      showGeneralError(context, 'Email dan password wajib diisi!');
+      setState(() => loading = false);
+      return;
     }
 
+    if (password.text.length < 8) {
+      showGeneralError(context, 'Passoword minimal 8 kerakter!');
+      setState(() => loading = false);
+      return;
+    }
+
+    try {
+      final storage = await getStorage();
+      final header = {'Content-type': 'application/json'};
+      final response = await client.post(
+        url,
+        data: datalogin.toMap(),
+        options: Options(headers: header),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        storage.setString('token', response.data['data']['access_token']);
+        if (context.mounted) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        }
+        return;
+      }
+    } on DioException catch (_) {
+      if (context.mounted) {
+        showGeneralError(context, 'Username/password salah');
+      }
+    } finally {
+      setState(() => loading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
@@ -111,7 +127,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Container(
+                  SizedBox(
                     width: size.width * 9,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,9 +147,10 @@ class _LoginState extends State<Login> {
                           child: const Text(
                             "Register Now",
                             style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: greenPrimary),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: greenPrimary,
+                            ),
                           ),
                         ),
                         TextButton(
@@ -158,21 +175,30 @@ class _LoginState extends State<Login> {
                     width: MediaQuery.of(context).size.width * 1,
                     height: MediaQuery.of(context).size.height * .059,
                     child: ElevatedButton(
-                      onPressed: loginClick,
+                      onPressed: () => loginClick(context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: greenPrimary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                         ),
                       ),
-                      child: const Text(
-                        "MASUK",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: whiteColor,
-                        ),
-                      ),
+                      child: loading
+                          ? const SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              "MASUK",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: whiteColor,
+                              ),
+                            ),
                     ),
                   ),
                 ],
