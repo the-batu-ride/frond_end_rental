@@ -88,8 +88,13 @@ class _DaftarState extends State<Daftar> {
           Navigator.of(context).pushReplacementNamed('/');
         }
       }
-    } on DioException catch (_) {
-      showGeneralError(context, 'Terjadi kesalahan saat mendaftar');
+    } on DioException catch (error) {
+      if (error.response?.data['message'] != null &&
+          error.response?.data['message'].runtimeType == List<dynamic>) {
+        showGeneralError(context, error.response?.data['message'][0]);
+      } else {
+        showGeneralError(context, 'Terjadi kesalahan saat mendaftar');
+      }
     } finally {
       setState(() => loading = false);
     }

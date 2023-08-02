@@ -75,8 +75,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        color: lightGreyColor,
+      body: SizedBox(
         width: size.width,
         height: size.height,
         child: Column(
@@ -110,7 +109,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(
-                    height: 14,
+                    height: 20,
                   ),
                   TextField(
                     controller: password,
