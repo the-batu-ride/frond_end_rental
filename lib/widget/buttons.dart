@@ -3,13 +3,15 @@ import 'package:frond_end_rental/constant/colors.dart';
 
 class ButtonSolid extends StatelessWidget {
   final Size sizes;
-  final String text;
+  final Widget? child;
+  final String? text;
   final Function()? handler;
 
   const ButtonSolid({
     super.key,
     required this.sizes,
-    required this.text,
+    this.text,
+    this.child,
     this.handler,
   });
 
@@ -27,13 +29,14 @@ class ButtonSolid extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      child: child ??
+          Text(
+            text!,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
     );
   }
 }

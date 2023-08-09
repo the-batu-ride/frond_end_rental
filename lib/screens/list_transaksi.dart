@@ -1,6 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:frond_end_rental/constant/conection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frond_end_rental/bloc/auth/auth_bloc.dart';
+import 'package:frond_end_rental/bloc/transaction/list/transaction_bloc.dart';
+import 'package:frond_end_rental/widget/loader.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../constant/colors.dart';
@@ -15,61 +18,39 @@ class ListTransaksi extends StatefulWidget {
 }
 
 class _ListTransaksiState extends State<ListTransaksi> {
-  List<dynamic> list = [];
-  bool preLoad = true;
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
-    getHistoryTransaction();
     super.initState();
+    context.read<AuthBloc>()
+      ..add(AuthChecking())
+      ..add(CheckStatus());
+    _scrollController.addListener(_onScroll);
   }
 
   @override
-  void setState(VoidCallback fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
   }
 
-  void getHistoryTransaction() async {
-    try {
-      final token = await getToken();
-      final response = await client.get<Map<String, dynamic>>(
-        '${apiConnection}api/v1/transaction',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
-
-      final data = response.data!['data'] as List<dynamic>;
-      setState(() {
-        list = data;
-        preLoad = false;
-      });
-    } on DioException catch (_) {
-      setState(() {
-        preLoad = false;
-      });
-    }
+  void _onScroll() {
+    if (_isBottom) context.read<TransactionBloc>().add(TransactionFetched());
   }
 
-  List<Widget> renderCards(Size size) {
-    return list
-        .map(
-          (e) => cardListTransaksi(
-            context,
-            size: size,
-            nameTransaksi: e['package']['name'],
-            price: e['package']['price'].toString(),
-            status: e['status'],
-            package: e['package'],
-            data: e,
-          ),
-        )
-        .toList();
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: lightGreyColor,
@@ -78,9 +59,7 @@ class _ListTransaksiState extends State<ListTransaksi> {
         backgroundColor: whiteColor,
         leading: Builder(
           builder: (cont) => GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed('/home');
-            },
+            onTap: () => context.goNamed('home'),
             child: const Icon(
               Ionicons.chevron_back_outline,
               color: blackColor,
@@ -89,7 +68,7 @@ class _ListTransaksiState extends State<ListTransaksi> {
         ),
         title: const Center(
           child: Text(
-            "Transactions",
+            'Transactions',
             style: TextStyle(
               color: blackColor,
               fontWeight: FontWeight.w600,
@@ -98,40 +77,53 @@ class _ListTransaksiState extends State<ListTransaksi> {
           ),
         ),
       ),
-      body: preLoad
-          ? const Center(
-              child: CircularProgressIndicator(
-              color: primaryColor,
-            ))
-          : Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SizedBox(
-                  width: size.width * .9,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 7,
+      body: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is SignedIn) {
+            return BlocBuilder<TransactionBloc, TransactionState>(
+              builder: (context, state) {
+                switch (state.status) {
+                  case TransactionStatus.success:
+                    return ListView.builder(
+                      controller: _scrollController,
+                      itemCount: state.hasMore
+                          ? state.transactions.length + 1
+                          : state.transactions.length,
+                      itemBuilder: (context, index) =>
+                          index >= state.transactions.length
+                              ? const BottomLoader()
+                              : CardHistory(
+                                  data: state.transactions[index],
+                                  size: size,
+                                ),
+                    );
+                  case TransactionStatus.failed:
+                    return const Center(
+                      child: Text('Terjadi kesalahan saat mengambil data'),
+                    );
+                  default:
+                    return const Center(
+                      child: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircularProgressIndicator(strokeWidth: 3),
                       ),
-                      const Text(
-                        "Today",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      ...renderCards(size),
-                    ],
-                  ),
-                ),
-              ),
+                    );
+                }
+              },
+            );
+          }
+
+          return const Center(
+            child: SizedBox(
+              height: 25,
+              width: 25,
+              child: CircularProgressIndicator(strokeWidth: 3),
             ),
-      bottomNavigationBar: bottomMenu(
-        context: context,
-        onQrResolve: (dataQr) {},
+          );
+        },
       ),
+      bottomNavigationBar: const BottomMenu(),
     );
   }
 }

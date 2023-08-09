@@ -1,18 +1,16 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:frond_end_rental/constant/conection.dart';
-import 'package:frond_end_rental/provider/transaction_provider.dart';
-import 'package:frond_end_rental/utils/auth_uril.dart';
-import 'package:frond_end_rental/utils/security.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frond_end_rental/bloc/auth/auth_bloc.dart'
+    show AuthBloc, AuthChecking, CheckStatus, AuthState, SignedIn;
+import 'package:frond_end_rental/models/auth.dart';
+
 import 'package:frond_end_rental/widget/items.dart';
 import 'package:frond_end_rental/widget/route_bottom_sheet.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
 
 import '../constant/colors.dart';
 import '../widget/bottom_menu.dart';
 import '../widget/card_view.dart';
-import '../widget/drawer_value.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,28 +20,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool preLoad = false;
-  dynamic data;
-
   @override
   void initState() {
-    getToken().then((value) {
-      if (value == null) {
-        showUnAuthorizedError(context);
-        Navigator.of(context).pushReplacementNamed('/');
-      } else {
-        client
-            .get('${apiConnection}api/v1/auth/user',
-                options: Options(headers: {'Authorization': 'Bearer $value'}))
-            .then((res) {
-          setState(() {
-            preLoad = false;
-            data = res.data['data'];
-          });
-        });
-      }
-    });
     super.initState();
+    context.read<AuthBloc>()
+      ..add(AuthChecking())
+      ..add(CheckStatus());
   }
 
   @override
@@ -51,23 +33,13 @@ class _HomePageState extends State<HomePage> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      drawer: const Drawer(
-        child: DrawerValue(),
-      ),
       backgroundColor: lightGreyColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: primaryColor,
-        leading: Builder(
-          builder: (cont) => GestureDetector(
-            onTap: () {
-              Scaffold.of(cont).openDrawer();
-            },
-            child: const Icon(
-              Icons.menu,
-              color: blackColor,
-            ),
-          ),
+        leading: const Icon(
+          Icons.menu,
+          color: primaryColor,
         ),
         title: Padding(
           padding: const EdgeInsets.all(1.0),
@@ -86,236 +58,219 @@ class _HomePageState extends State<HomePage> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(11),
               child: Image.asset(
-                './assets/images/1.jpg', // Replace with your profile image asset
-                width: 30, // Adjust the width as needed
+                './assets/images/1.jpg',
+                width: 30,
               ),
             ),
           ),
         ],
       ),
-      body: preLoad
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: primaryColor,
+      body: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is SignedIn) {
+            return HomeWidget(
+              size: size,
+              data: state.authEntity,
+            );
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(strokeWidth: 2),
+          );
+        },
+      ),
+      bottomNavigationBar: const BottomMenu(),
+    );
+  }
+}
+
+class HomeWidget extends StatelessWidget {
+  const HomeWidget({
+    super.key,
+    required this.size,
+    required this.data,
+  });
+
+  final Size size;
+  final AuthEntity data;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Positioned(
+                  child: Container(
+                    width: size.width * 1,
+                    height: size.height * 0.12,
+                    decoration: const BoxDecoration(
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
+                FeatureBars(size: size, data: data),
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.only(
+                top: 30.0,
+                right: 20,
+                left: 20,
+                bottom: 10,
               ),
-            )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 37, right: 37),
-                child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Berita Terbaru',
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+                  ),
+                  Text(
+                    'View All',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      color: mediumGreyColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const EventsWidget(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FeatureBars extends StatelessWidget {
+  const FeatureBars({
+    super.key,
+    required this.size,
+    required this.data,
+  });
+
+  final Size size;
+  final AuthEntity data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: whiteColor,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(11),
+              bottomRight: Radius.circular(11),
+            ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                alignment: Alignment.centerLeft,
+                width: size.width * 0.85,
+                height: size.height * 0.11,
+                child: Text(
+                  'Selamat Datang ${data.name}',
+                  style: const TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 25, right: 25),
+                child: Divider(
+                  color: lightGreyColor,
+                  height: 4,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 20,
+                  right: 20,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Stack(
-                      children: [
-                        Positioned(
-                          child: Container(
-                            width: size.width * 1,
-                            height: size.height * 0.12,
-                            decoration: const BoxDecoration(
-                              color: primaryColor,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(right: 18.0, left: 18.0),
-                            child: Container(
-                              width: size.width * 1,
-                              height: size.height * 0.30,
-                              decoration: const BoxDecoration(
-                                color: whiteColor,
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(11),
-                                  bottomRight: Radius.circular(11),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25),
-                                    alignment: Alignment.centerLeft,
-                                    width: size.width * 0.85,
-                                    height: size.height * 0.11,
-                                    child: Text(
-                                      "Selamat Datang ${data?['full_name'] ?? ""}",
-                                      style: const TextStyle(
-                                        color: blackColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 25, right: 25),
-                                    child: Divider(
-                                      color: lightGreyColor,
-                                      height: 4,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10, left: 20, right: 20),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        renderItemDashboard(
-                                          size: size,
-                                          title: 'Jadwal Event',
-                                          color: pinkEvent,
-                                          icons: Ionicons.calendar_outline,
-                                        ),
-                                        renderItemDashboard(
-                                          size: size,
-                                          title: 'Chat CS',
-                                          color: purpleChat,
-                                          icons:
-                                              Ionicons.chatbox_ellipses_outline,
-                                        ),
-                                        Builder(builder: (context) {
-                                          return renderItemDashboard(
-                                            size: size,
-                                            title: 'Package Route',
-                                            color: yellowBicycle,
-                                            icons: Ionicons.bicycle_outline,
-                                            handleClick: () async {
-                                              final bike = context
-                                                  .read<TransactionProvider>()
-                                                  .bike;
-                                              final bikeStore =
-                                                  await getCurrentBike();
-
-                                              if (bike == null ||
-                                                  bikeStore == null) {
-                                                if (context.mounted) {
-                                                  showGeneralError(context,
-                                                      'Scan speda terlebih dahulu');
-                                                }
-                                                return;
-                                              }
-
-                                              if (context.mounted) {
-                                                showModalBottomSheet(
-                                                  context: context,
-                                                  builder: (ctx) {
-                                                    return const PakcageBottomSheet();
-                                                  },
-                                                );
-                                              }
-                                            },
-                                          );
-                                        }),
-                                        renderItemDashboard(
-                                          size: size,
-                                          title: 'Saldo',
-                                          color: greenSaldo,
-                                          icons: Ionicons.file_tray_outline,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    renderItemDashboard(
+                      size: size,
+                      title: 'Jadwal Event',
+                      color: pinkEvent,
+                      icons: Ionicons.calendar_outline,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        top: 30.0,
-                        right: 20,
-                        left: 20,
-                        bottom: 10,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Berita Terbaru",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w800, fontSize: 15),
-                          ),
-                          Text(
-                            "View All",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                              color: mediumGreyColor,
-                            ),
-                          ),
-                        ],
-                      ),
+                    renderItemDashboard(
+                      size: size,
+                      title: 'Chat CS',
+                      color: purpleChat,
+                      icons: Ionicons.chatbox_ellipses_outline,
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          cardView(
-                            image: './assets/images/4.jpg',
-                            title: 'Event Bromo KOM Challenge 2023',
-                          ),
-                          cardView(
-                            image: './assets/images/4.jpg',
-                            title: 'Banyuwangi Blue Fire Ijen Challenge 2023',
-                          ),
-                          cardView(
-                            image: './assets/images/4.jpg',
-                            title: 'Kediri Dholo KOM Challenge 2023',
-                          ),
-                        ],
-                      ),
+                    Builder(builder: (context) {
+                      return renderItemDashboard(
+                        size: size,
+                        title: 'Package Route',
+                        color: yellowBicycle,
+                        icons: Ionicons.bicycle_outline,
+                        handleClick: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (_) => const PakcageBottomSheet(),
+                          );
+                        },
+                      );
+                    }),
+                    renderItemDashboard(
+                      size: size,
+                      title: 'Saldo',
+                      color: greenSaldo,
+                      icons: Ionicons.file_tray_outline,
                     ),
-                    Container(
-                      width: size.width * 0.9,
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.only(top: 20),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(2)),
-                        color: whiteColor,
-                      ),
-                      child: const Column(
-                        children: [
-                          Text(
-                            "Copyright © Finapp 2021. All Rights Reserved.",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 12),
-                          ),
-                          Text(
-                            "Bootstrap 5 based mobile template.",
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EventsWidget extends StatelessWidget {
+  const EventsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            CardEvent(
+              image: './assets/images/4.jpg',
+              title: 'Event Bromo KOM Challenge 2023',
             ),
-      bottomNavigationBar: bottomMenu(
-        context: context,
-        onQrResolve: (dataQr) async {
-          final newId = dataQr!.replaceFirst(RegExp('Code scanned = '), '');
-          final id = encryptId(int.parse(newId));
-          final token = await getToken();
-          final response = await client.get(
-            '${apiConnection}api/v1/bike/$id',
-            options: Options(headers: {'Authorization': 'Bearer $token'}),
-          );
-
-          if (context.mounted) {
-            context
-                .read<TransactionProvider>()
-                .setBike(response.data['data']['id']);
-
-            showModalBottomSheet(
-              context: context,
-              builder: (ctx) => const PakcageBottomSheet(),
-            );
-          }
-        },
+            CardEvent(
+              image: './assets/images/4.jpg',
+              title: 'Banyuwangi Blue Fire Ijen Challenge 2023',
+            ),
+            CardEvent(
+              image: './assets/images/4.jpg',
+              title: 'Kediri Dholo KOM Challenge 2023',
+            ),
+          ],
+        ),
       ),
     );
   }

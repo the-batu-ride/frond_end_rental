@@ -46,3 +46,85 @@ class GeneralInput extends StatelessWidget {
     );
   }
 }
+
+class BaseInput extends StatelessWidget {
+  final TextEditingController? controller;
+  final String hint, label;
+  final bool secure;
+
+  const BaseInput({
+    super.key,
+    this.controller,
+    this.secure = false,
+    required this.hint,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      obscureText: secure,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+}
+
+class InputWithValidate extends StatelessWidget {
+  final TextEditingController controller;
+  final String hint;
+  final String label;
+  final bool secure;
+  final List<dynamic> validation;
+
+  const InputWithValidate({
+    super.key,
+    required this.controller,
+    required this.hint,
+    required this.label,
+    this.secure = false,
+    this.validation = const <dynamic>[],
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      obscureText: secure,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      validator: (value) {
+        for (var i = 0; i < validation.length; i++) {
+          if (value == validation[i]) {
+            return 'Kolom ini wajib diisi!';
+          }
+
+          if (value != null &&
+              validation[i].runtimeType == int &&
+              value.length < validation[i]) {
+            return 'Panjang minimal ${validation[i]} karakter!';
+          }
+        }
+
+        return null;
+      },
+    );
+  }
+}
