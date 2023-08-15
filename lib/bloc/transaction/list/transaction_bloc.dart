@@ -31,18 +31,30 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     Emitter<TransactionState> emit,
   ) async {
     try {
-      final start = state.transactions.length;
-      final response = await TransactionRepository.getTransactions(start);
+      if (state.hasMore) {
+        final start = state.transactions.length;
+        final response = await TransactionRepository.getTransactions(start);
 
-      if (response.isEmpty) {
-        emit(state.copyWith(status: TransactionStatus.success, hasMore: false));
-        return;
+        if (response.isEmpty) {
+          emit(state.copyWith(
+              status: TransactionStatus.success, hasMore: false));
+          return;
+        }
+
+        if (response.length < 10) {
+          emit(state.copyWith(
+            transactions: List.of(state.transactions)..addAll(response),
+            status: TransactionStatus.success,
+            hasMore: false,
+          ));
+          return;
+        }
+
+        emit(state.copyWith(
+          transactions: List.of(state.transactions)..addAll(response),
+          status: TransactionStatus.success,
+        ));
       }
-
-      emit(state.copyWith(
-        transactions: List.of(state.transactions)..addAll(response),
-        status: TransactionStatus.success,
-      ));
     } on DioException catch (_) {
       emit(state.copyWith(status: TransactionStatus.failed));
     }

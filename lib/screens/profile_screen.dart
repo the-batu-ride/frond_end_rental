@@ -8,6 +8,7 @@ import 'package:frond_end_rental/utils/auth_util.dart';
 import 'package:frond_end_rental/widget/appbar_custom.dart';
 import 'package:frond_end_rental/widget/bottom_menu.dart';
 import 'package:frond_end_rental/widget/inputs.dart';
+import 'package:frond_end_rental/widget/loader.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -165,7 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
                         ),
-                        child: const Text('Save'),
+                        child: loading
+                            ? const CenterLoader(color: Colors.white)
+                            : const Text('Save'),
                       ),
                     ),
                   ],

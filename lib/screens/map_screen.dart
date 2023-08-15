@@ -5,12 +5,14 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:frond_end_rental/bloc/auth/auth_bloc.dart';
 import 'package:frond_end_rental/bloc/map/map_bloc.dart';
 import 'package:frond_end_rental/constant/colors.dart';
+import 'package:frond_end_rental/models/package.dart';
 import 'package:frond_end_rental/utils/security.dart';
 import 'package:frond_end_rental/widget/loader.dart' show CenterLoader;
 import 'package:geolocator/geolocator.dart' show LocationAccuracy, Geolocator;
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart' show Ionicons;
 import 'package:latlong2/latlong.dart' show LatLng;
+import 'package:popover/popover.dart';
 
 class MapScreen extends StatefulWidget {
   final String code;
@@ -117,10 +119,6 @@ class _MapScreenState extends State<MapScreen> {
                         onPressed: () {},
                       ),
                     ),
-                  ],
-                ),
-                MarkerLayer(
-                  markers: [
                     Marker(
                       width: 30.0,
                       height: 30.0,
@@ -133,6 +131,28 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ),
                   ],
+                ),
+                BlocSelector<MapBloc, MapState, List<Point>>(
+                  selector: (selecBoots) => selecBoots.boots,
+                  builder: (_, boots) {
+                    return MarkerLayer(
+                      markers: boots
+                          .map(
+                            (e) => Marker(
+                              width: 30,
+                              height: 30,
+                              point: LatLng(e.lat, e.lng),
+                              builder: (context) => IconButton(
+                                iconSize: 20,
+                                color: const Color.fromARGB(255, 1, 10, 80),
+                                onPressed: () {},
+                                icon: const Icon(Ionicons.ellipse_outline),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    );
+                  },
                 ),
                 BlocSelector<MapBloc, MapState, LatLng?>(
                   selector: (state) => state.currentLoc,

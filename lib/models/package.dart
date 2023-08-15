@@ -10,6 +10,7 @@ final class Package extends Equatable {
   final String lngStart;
   final String latDestination;
   final String lngDestination;
+  final List<Point> points;
 
   @override
   List<Object?> get props => [
@@ -22,6 +23,7 @@ final class Package extends Equatable {
         lngStart,
         latDestination,
         lngDestination,
+        points
       ];
 
   const Package({
@@ -34,6 +36,7 @@ final class Package extends Equatable {
     required this.lngStart,
     required this.latDestination,
     required this.lngDestination,
+    required this.points,
   });
 
   factory Package.fromJson(dynamic json) {
@@ -47,6 +50,11 @@ final class Package extends Equatable {
       lngStart: json['lngt_start'],
       latDestination: json['lat_destination'],
       lngDestination: json['lngt_destination'],
+      points: json['points'] == null
+          ? []
+          : (json['points'] as List<dynamic>)
+              .map((e) => Point.fromJson(e))
+              .toList(),
     );
   }
 
@@ -57,4 +65,25 @@ final class Package extends Equatable {
   String toString() {
     return '$name - $price';
   }
+}
+
+class Point extends Equatable {
+  final String title;
+  final double lat;
+  final double lng;
+
+  const Point({
+    required this.title,
+    required this.lat,
+    required this.lng,
+  });
+
+  @override
+  List<Object?> get props => [title, lat, lng];
+
+  factory Point.fromJson(dynamic json) => Point(
+        title: json['title'],
+        lat: double.parse(json['latitude']),
+        lng: double.parse(json['longitude']),
+      );
 }

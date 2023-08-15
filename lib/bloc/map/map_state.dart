@@ -7,6 +7,7 @@ final class MapState extends Equatable {
   final MapStatus status;
   final LatLng? currentLoc;
   final List<LatLng> points;
+  final List<Point> boots;
   final double disntance;
 
   const MapState({
@@ -15,6 +16,7 @@ final class MapState extends Equatable {
     this.currentLoc,
     this.points = const <LatLng>[],
     this.disntance = 1000,
+    this.boots = const <Point>[],
   });
 
   MapState copyWith({
@@ -23,6 +25,7 @@ final class MapState extends Equatable {
     LatLng? currentLoc,
     List<LatLng>? points,
     double? disntance,
+    List<Point>? boots,
   }) =>
       MapState(
         routePoints: routePoints ?? this.routePoints,
@@ -30,9 +33,16 @@ final class MapState extends Equatable {
         currentLoc: currentLoc ?? this.currentLoc,
         points: points ?? this.points,
         disntance: disntance ?? this.disntance,
+        boots: boots ?? this.boots,
       );
 
   @override
-  List<Object?> get props =>
-      [routePoints, status, currentLoc, points, disntance];
+  List<Object?> get props => [
+        routePoints,
+        status,
+        currentLoc,
+        points,
+        disntance,
+        boots,
+      ];
 }

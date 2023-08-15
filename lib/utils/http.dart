@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:frond_end_rental/errors/unauthorize_error.dart';
 import 'package:frond_end_rental/utils/storage.dart';
 
-const _serverURL = 'https://rental-393914.an.r.appspot.com/api/v1';
-const socketServer = 'https://rental-393914.an.r.appspot.com';
+const _serverURL = 'https://odd-gold-yak-sock.cyclic.app/api/v1';
+const socketServer = 'https://odd-gold-yak-sock.cyclic.app';
 
 final _client = Dio(BaseOptions(baseUrl: _serverURL));
 

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:frond_end_rental/models/package.dart';
 import 'package:frond_end_rental/repositories/route_repository.dart';
 import 'package:frond_end_rental/repositories/transaction_repository.dart';
 import 'package:geolocator/geolocator.dart';
@@ -30,11 +31,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       final routePoints = await RouteRepository.getRoute(start, end);
 
       emit(state.copyWith(
-        status: MapStatus.loaded,
-        points: [start, end],
-        currentLoc: start,
-        routePoints: routePoints,
-      ));
+          status: MapStatus.loaded,
+          points: [start, end],
+          currentLoc: start,
+          routePoints: routePoints,
+          boots: response.package.points));
     } on DioException catch (_) {
       emit(state.copyWith(status: MapStatus.error));
     }
