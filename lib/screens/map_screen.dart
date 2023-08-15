@@ -12,7 +12,6 @@ import 'package:geolocator/geolocator.dart' show LocationAccuracy, Geolocator;
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart' show Ionicons;
 import 'package:latlong2/latlong.dart' show LatLng;
-import 'package:popover/popover.dart';
 
 class MapScreen extends StatefulWidget {
   final String code;

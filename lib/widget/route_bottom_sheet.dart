@@ -6,9 +6,11 @@ import 'package:frond_end_rental/bloc/transaction/creation/transaction_creation_
 import 'package:frond_end_rental/models/package.dart';
 import 'package:frond_end_rental/utils/auth_util.dart'
     show showGeneralError, showSuccessMessage;
+import 'package:frond_end_rental/utils/security.dart';
 import 'package:frond_end_rental/widget/buttons.dart';
 import 'package:frond_end_rental/widget/inputs.dart';
 import 'package:frond_end_rental/widget/loader.dart' show CenterLoader;
+import 'package:go_router/go_router.dart';
 
 class PakcageBottomSheet extends StatelessWidget {
   const PakcageBottomSheet({super.key});
@@ -154,12 +156,16 @@ class PakcageBottomSheet extends StatelessWidget {
                         return BlocListener<TransactionCreationBloc,
                             TransactionCreationState>(
                           listener: (context, state) {
-                            if (state.status == CreationStatus.success) {
+                            if (state.status == CreationStatus.success &&
+                                state.activeId != null) {
                               showSuccessMessage(
                                 context,
-                                'success ${state.activeId}',
+                                'Sukses membuat pesanan',
                               );
                               Navigator.pop(context);
+                              context.goNamed('verification', pathParameters: {
+                                'code': encryptId(state.activeId!)
+                              });
                             } else if (state.status == CreationStatus.failed) {
                               showGeneralError(
                                 context,
